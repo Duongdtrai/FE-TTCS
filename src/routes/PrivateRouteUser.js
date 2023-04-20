@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import AppLayoutUser from "../components/AppLayoutUser";
 // eslint-disable-next-line react/prop-types
 export const PrivateRouteUser = ({ children, ...rest }) => {
-  const auth = useSelector((state) => state.auth);
+  const auth = useSelector((state) => state.authAdmin);
   let isLogin = auth.token && auth.user;
   isLogin = true;
   return (

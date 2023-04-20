@@ -1,6 +1,8 @@
 const storage = {
-  token: "token",
-  userID: "userID",
+  accessTokenAdmin: "accessTokenAdmin",
+  accessTokenUser: "accessTokenUser",
+  adminId: "adminId",
+  userId: "userId",
 };
   
 export default storage;

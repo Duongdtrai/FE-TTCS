@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {STORAGE} from "../../configs";
+import { STORAGE } from "../../configs";
 
-export const initialState ={
-  userId: 0,
+export const initialState = {
+  userId: localStorage.getItem(STORAGE.userId) || "",
   user: {},
-  token: localStorage.getItem(STORAGE.token) || "",
+  accessTokenUser: localStorage.getItem(STORAGE.accessTokenUser) || "",
   is_loading: false
 };
 
@@ -21,21 +21,21 @@ const Slice = createSlice({
       state.is_loading = false;
     },
     setUserToken: (state, action) => {
-      localStorage.setItem(STORAGE.token, action.payload.token);
-      localStorage.setItem("userId", action.payload.userId);
-      state.userId = action.payload.userId;
-      state.token = action.payload.token;
+      localStorage.setItem(STORAGE.accessTokenUser, action.payload.accessToken);
+      localStorage.setItem(STORAGE.userId, action.payload.id);
+      state.userId = action.payload.id;
+      state.accessTokenUser = action.payload.accessToken;
       state.is_loading = false;
     },
     logout: (state) => {
       localStorage.clear();
       state.userId = 0;
       state.user = {};
-      state.token = "";
+      state.accessTokenUser = "";
       state.is_loading = false;
     },
   }
 });
 
-
-export default Slice.reducer;
+export const { setUserId, setUser, setUserToken, logout } = Slice.actions;
+export default Slice.reducer; 

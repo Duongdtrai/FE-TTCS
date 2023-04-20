@@ -15,9 +15,8 @@ import { Dropdown, Layout, Menu } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { LogoutService } from "./Service";
-import UserAvatar from "../UserAvatar";
+import AdminAvatar from "../AdminAvatar";
 import { STORAGE } from '../../configs';
-// import {GetCurrentUserService} from '../GetCurrentUser/Service';
 
 const { Header, Content, Sider } = Layout;
 
@@ -70,23 +69,20 @@ const leftMenuList = [
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.authAdmin.user);
   const [collapsed, setCollapsed] = useState(false);
   // const updateAdmin = useSelector((state) => state.updateAdmin);
   const history = useHistory();
   const dispatch = useDispatch();
-  const onLogout = () => {
-    localStorage.clear();
-    history.push("/login");
-  };
+ 
 
   // useEffect(() => {
   //   getUserInfo();
   // }, [updateAdmin.refresh]);
 
   // const getUserInfo = () => {
-  //   const userId = localStorage.getItem("userId") || "";
-  //   GetCurrentUserService.run(dispatch, userId);
+  //   const adminId = localStorage.getItem("adminId") || "";
+  //   GetCurrentUserService.run(dispatch, adminId);
   // };
 
   const items = [
@@ -106,11 +102,14 @@ const AppLayout = ({ children }) => {
       icon: <PoweroffOutlined />,
     },
   ];
-
+  const onLogout = () => {
+    localStorage.clear();
+    history.push("/admin/login");
+  };
   const handleMenuClick = (events) => {
     if (events.key) {
       if (events.key === "/logout") {
-        LogoutService.run(dispatch, { user: localStorage.getItem(STORAGE.userID) }, onLogout);
+        LogoutService.run(dispatch, { user: localStorage.getItem(STORAGE.adminId) }, onLogout);
         localStorage.clear();
         history.push("/admin/login");
       } else {
@@ -145,7 +144,7 @@ const AppLayout = ({ children }) => {
           <Dropdown menu={menuProps} placement="bottomLeft">
             <a href="#" className="d-block" style={{ color: "#FFFFFF", overflow: "hidden", maxWidth: "75ch" }}>
               <label className="text-overflow text-black" >{user?.fullName ? user?.fullName : 'Admin'}</label>&ensp;
-              <UserAvatar size={40} />
+              <AdminAvatar size={40} />
             </a>
           </Dropdown>
         </div>
