@@ -1,9 +1,9 @@
 import React from 'react';
 
-const ListManager = () => {
+const CreateStore = () => {
   return (
-    <div>ListManager</div>
+    <div>CreateStore</div>
   );
 };
 
-export default ListManager;
+export default CreateStore;

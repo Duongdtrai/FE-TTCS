@@ -1,10 +1,10 @@
 import React from 'react';
-
-const ListBooks = () => {
+import './style.scss';
+const CreateBook = () => {
  
   return (
     <div>EditBooks</div>
   );
 };
 
-export default ListBooks;
+export default CreateBook;

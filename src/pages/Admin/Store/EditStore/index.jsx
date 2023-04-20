@@ -1,9 +1,10 @@
 import React from 'react';
-
-const ListManager = () => {
+import { useParams } from 'react-router-dom';
+const EditStore = () => {
+  const {storeId} = useParams();
   return (
-    <div>ListManager</div>
+    <div>EditStore</div>
   );
 };
 
-export default ListManager;
+export default EditStore;

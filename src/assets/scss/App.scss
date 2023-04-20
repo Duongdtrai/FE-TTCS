@@ -69,9 +69,10 @@ body,
 }
 
 .site-layout-content {
-  min-height: 280px;
+  min-height: 100vh;
   padding: 24px;
 }
+
 #components-layout-demo-top .logo {
   float: left;
   width: 120px;
