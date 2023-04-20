@@ -1,7 +1,8 @@
 import React from "react";
-import {BrowserRouter, Switch, Route} from "react-router-dom";
-import {PrivateRouteAdmin} from "./PrivateRouteAdmin";
-import {PrivateRouteUser} from "./PrivateRouteUser";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { PrivateRouteAdmin } from "./PrivateRouteAdmin";
+import { PrivateRouteUser } from "./PrivateRouteUser";
+import AppLayoutUser from "../components/AppLayoutUser";
 import {
   /**Admin */
   LoginAdmin,
@@ -9,7 +10,14 @@ import {
   ListManager,
   CreateManager,
   EditManager,
-  
+  DashBoard,
+  ListBook,
+  EditBook,
+  CreateBook,
+  ListStore,
+  CreateStore,
+  EditStore,
+
   /**User */
   LoginPage,
   HomePage,
@@ -18,6 +26,9 @@ import {
   CartPage,
   ChangePasswordPage,
   ProfilePage,
+  ListCart,
+  EditCart,
+
 } from "../pages";
 
 const RoutesProvider = () => {
@@ -26,55 +37,92 @@ const RoutesProvider = () => {
    */
   const PrivateUserPages = [
     {
-      path: "/home-page",
-      component: <HomePage/>,
-    },
-    {
       path: "/login",
-      component: <LoginPage/>,
+      component: <LoginPage />,
     },
     {
       path: "/register",
-      component: <RegisterPage/>,
+      component: <RegisterPage />,
     },
     {
       path: "/author",
-      component: <AuthorPage/>,
-    },{
+      component: <AuthorPage />,
+    }, {
       path: "/cart",
-      component: <CartPage/>,
-    },{
+      component: <CartPage />,
+    }, {
       path: "/change-password",
-      component: <ChangePasswordPage/>,
-    },{
+      component: <ChangePasswordPage />,
+    }, {
       path: "/profile",
-      component: <ProfilePage/>,
+      component: <ProfilePage />,
     }
-
   ];
 
 
   /**
    * @Role {admin}
    */
-  const PrivateAdminPages =[ 
+  const PrivateAdminPages = [
     {
       path: "/admin/list-manager",
-      component: <ListManager/>,
+      component: <ListManager />,
     },
     {
       path: "/admin/create-manager",
-      component: <CreateManager/>,
+      component: <CreateManager />,
     },
     {
       path: "/admin/edit-manager",
-      component: <EditManager/>,
-    }
+      component: <EditManager />,
+    },
+    {
+      path: "/admin/list-book",
+      component: <ListBook />,
+    },
+    {
+      path: "/admin/create-book",
+      component: <CreateBook />,
+    },
+    {
+      path: "/admin/edit-book",
+      component: <EditBook />,
+    },
+    {
+      path: "/admin/list-cart",
+      component: <ListCart />,
+    },
+    {
+      path: "/admin/edit-cart",
+      component: <EditCart />,
+    },
+    {
+      path: "/admin/list-store",
+      component: <ListStore />,
+    },
+    {
+      path: "/admin/create-store",
+      component: <CreateStore />,
+    },
+    {
+      path: "/admin/edit-store/:storeId",
+      component: <EditStore />,
+    },
+    {
+      path: "/admin",
+      component: <DashBoard />
+    },
   ];
-    
+
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path="/">
+          <AppLayoutUser>
+            <HomePage />
+          </AppLayoutUser>
+
+        </Route>
         <Route exact path="/admin/login">
           <LoginAdmin />
         </Route>
@@ -85,17 +133,17 @@ const RoutesProvider = () => {
               {i.component}
             </PrivateRouteAdmin>
           );
-        })} 
+        })}
         {PrivateUserPages.map((i, index) => {
           return (
             <PrivateRouteUser path={i.path} key={index}>
               {i.component}
             </PrivateRouteUser>
           );
-        })} 
-       
+        })}
+
         <Route path="*">
-          <Error404/>
+          <Error404 />
         </Route>
       </Switch>
     </BrowserRouter>

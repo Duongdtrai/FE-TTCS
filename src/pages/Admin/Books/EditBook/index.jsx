@@ -1,10 +1,10 @@
 import React from 'react';
 
-const ListBooks = () => {
+const EditBook = () => {
  
   return (
     <div>EditBooks</div>
   );
 };
 
-export default ListBooks;
+export default EditBook;

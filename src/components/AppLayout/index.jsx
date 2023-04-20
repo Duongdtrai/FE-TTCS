@@ -23,7 +23,7 @@ const { Header, Content, Sider } = Layout;
 
 const leftMenuList = [
   {
-    key: '/dashboard',
+    key: '/admin',
     icon: <DashboardOutlined />,
     label: 'Dashboard'
   },
@@ -50,17 +50,17 @@ const leftMenuList = [
     label: 'Quản lý giỏ hàng',
   },
   {
-    key: '/admin/book',
+    key: '/admin/list-borrow',
     icon: <PushpinOutlined />,
     label: 'Quản lý mượn sách',
   },
   {
-    key: '/admin/book',
+    key: '/admin/list-borrow',
     icon: <MoneyCollectOutlined />,
     label: 'Quản lý doanh thu',
   },
   {
-    key: '/admin/book',
+    key: '/admin/list-store',
     icon: <AppstoreOutlined />,
     label: 'Quản lý kho',
   },
@@ -112,9 +112,9 @@ const AppLayout = ({ children }) => {
       if (events.key === "/logout") {
         LogoutService.run(dispatch, { user: localStorage.getItem(STORAGE.userID) }, onLogout);
         localStorage.clear();
-        navigate("/login");
+        history.push("/admin/login");
       } else {
-        navigate(events.key);
+        history.push(events.key);
       }
     }
   };
@@ -136,7 +136,7 @@ const AppLayout = ({ children }) => {
       <Header style={{ backgroundColor: 'white', borderBottom: '1px solid #c9c9c9', position: 'sticky', top: 0, zIndex: 1, width: '100%', display: 'flex' }} className='justify-between items-center'>
         <div className="logo d-inline flex justify-between items-center">
           <img onClick={() => {
-            navigate("/admin");
+            history.push("/admin");
           }} src={logo} alt="Exponential Africa" className='logo'
           style={{ display: 'flex', height: "50px", paddingTop: "5px", cursor: "pointer" }} />
           <div className="ml-4 text-xl">My Admin</div>
@@ -154,7 +154,7 @@ const AppLayout = ({ children }) => {
         <Sider width={250} style={{ overflow: 'auto', height: '100vh', position: 'fixed' }} breakpoint="md" collapsedWidth={80}>
           <Menu
             onClick={({ key }) => {
-              navigate(key);
+              history.push(key);
             }}
             mode="inline"
             selectedKeys={[window.location.pathname]}
@@ -165,7 +165,7 @@ const AppLayout = ({ children }) => {
           />
         </Sider>
         <Layout style={{ marginLeft: 250 }} className='md:!ml-64 !ml-24'>
-          <Content style={{ flexGrow: 1, padding: 24 }}>
+          <Content style={{ flexGrow: 1, padding: 24, height: "100vh" }}>
             <div style={{ padding: 24, background: "#FFFFFF" }}>
               {children}
             </div>
