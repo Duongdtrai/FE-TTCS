@@ -2,12 +2,14 @@
 import {Route, Redirect} from "react-router-dom";
 import {useSelector} from "react-redux";
 import AppLayout from "../components/AppLayout";
-
+import {ROLE} from '../utils/constant';
+import { useEffect } from "react";
 // eslint-disable-next-line react/prop-types
 export const PrivateRouteAdmin = ({ children, ...rest }) => {
-  const auth = useSelector((state) => state.auth);
-  let isLogin = auth.token && auth.user;
-  isLogin = true;
+  const authAdmin = useSelector((state) => state.authAdmin);
+  const isLogin = authAdmin.token && authAdmin.adminId;
+  // gọi ra và check role
+
   return (
     <Route
       {...rest}
@@ -17,7 +19,7 @@ export const PrivateRouteAdmin = ({ children, ...rest }) => {
         ) : (
           <Redirect
             to={{
-              pathname: "/login",
+              pathname: "/admin/login",
               state: {from: location},
             }}
           />
