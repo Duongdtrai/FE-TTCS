@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDocumentTitle } from "../../../hooks/useDocumentTitle";
 
-const Dashboard = () => {
-  useDocumentTitle('Dashboard');
+const Profile = () => {
+  useDocumentTitle('Profile');
   return (
     <div>
-      <h1 className='text-3xl'>Dashboard</h1>
+      <h1 className='text-3xl'>Profile</h1>
     </div>
   );
 };
 
-export default Dashboard;
+export default Profile;

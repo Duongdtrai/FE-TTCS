@@ -8,7 +8,7 @@ const API = {
   logout: () => http.post("auth/logout"),
   refreshToken: () =>http.post("auth/refresh"),
   register: (data) =>http.post("auth/register", data),
-
+  getDetailsUser: () => http.get("auth/detail"),
   loginUser: (data) => http.post("auth/login", data),
 };
 export default API;

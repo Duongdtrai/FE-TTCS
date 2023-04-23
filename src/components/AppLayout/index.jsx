@@ -16,8 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { LogoutService } from "./Service";
 import AdminAvatar from "../AdminAvatar";
-import { STORAGE } from '../../configs';
-
+import { STORAGE, API } from '../../configs';
+import { ROLE } from '../../utils/constant';
+import { setAdmin } from "../../redux/slice/AuthAdminSlice";
 const { Header, Content, Sider } = Layout;
 
 const leftMenuList = [
@@ -38,44 +39,68 @@ const leftMenuList = [
     // ]
   },
   {
+    key: '/admin/list-employee',
+    icon: <UserOutlined />,
+    label: 'Quản lý danh sách nhân viên',
+  },
+  {
     key: '/admin/list-book',
     icon: <BookOutlined />,
     label: 'Quản lý danh sách Book',
   },
 
+ 
+  {
+    key: '/admin/list-borrow',
+    icon: <PushpinOutlined />,
+    label: 'Quản lý mượn sách',
+  },
+
+  {
+    key: '/admin/list-store',
+    icon: <AppstoreOutlined />,
+    label: 'Quản lý kho',
+  },
   {
     key: '/admin/list-cart',
     icon: <ShoppingCartOutlined />,
     label: 'Quản lý giỏ hàng',
   },
   {
-    key: '/admin/list-borrow',
-    icon: <PushpinOutlined />,
-    label: 'Quản lý mượn sách',
-  },
-  {
-    key: '/admin/list-borrow',
+    key: '/admin/list-revenue',
     icon: <MoneyCollectOutlined />,
     label: 'Quản lý doanh thu',
   },
-  {
-    key: '/admin/list-store',
-    icon: <AppstoreOutlined />,
-    label: 'Quản lý kho',
-  },
-
 ];
 
 
 // eslint-disable-next-line react/prop-types
 const AppLayout = ({ children }) => {
   const user = useSelector((state) => state.authAdmin.user);
+  const role = useSelector((state) => state.authAdmin.role);
+  const [acceptMenu, setAcceptMenu] = useState(true);
+  const [menuList, setMenuList] = useState(leftMenuList);
   const [collapsed, setCollapsed] = useState(false);
   // const updateAdmin = useSelector((state) => state.updateAdmin);
   const history = useHistory();
   const dispatch = useDispatch();
  
-
+  useEffect(() => {
+    API.getDetailsUser().then((response) => {
+      dispatch(setAdmin(response.data));
+      if (response.data.role === ROLE.ADMIN && acceptMenu) {
+        let menu = menuList;
+        menu.splice(2, 0, {
+          key: '/admin/list-employee',
+          icon: <UserOutlined />,
+          label: 'Quản lý danh sách nhân viên',
+        },);
+        setMenuList(menu);
+        setAcceptMenu(false);
+      } 
+    });
+   
+  }, []);
   // useEffect(() => {
   //   getUserInfo();
   // }, [updateAdmin.refresh]);
@@ -87,17 +112,17 @@ const AppLayout = ({ children }) => {
 
   const items = [
     {
-      key: "/profile",
+      key: "/admin/profile",
       label: "Profile",
       icon: <UserOutlined />,
     },
     {
-      key: "/change-password",
+      key: "/admin/change-password",
       label: "Change Password",
       icon: <UnlockOutlined />,
     },
     {
-      key: "/logout",
+      key: "/admin/logout",
       label: "Logout",
       icon: <PoweroffOutlined />,
     },
@@ -138,7 +163,7 @@ const AppLayout = ({ children }) => {
             history.push("/admin");
           }} src={logo} alt="Exponential Africa" className='logo'
           style={{ display: 'flex', height: "50px", paddingTop: "5px", cursor: "pointer" }} />
-          <div className="ml-4 text-xl">My Admin</div>
+          <div className="ml-4 text-xl">Hệ thống quản lý thư viện sách</div>
         </div>
         <div className="pe-3 d-inline float-end me-3">
           <Dropdown menu={menuProps} placement="bottomLeft">
@@ -160,7 +185,7 @@ const AppLayout = ({ children }) => {
             openKeys={openKeys}
             onOpenChange={onOpenChange}
             style={{ height: '100%', borderRight: 0 }}
-            items={leftMenuList}
+            items={menuList}
           />
         </Sider>
         <Layout style={{ marginLeft: 250 }} className='md:!ml-64 !ml-24'>

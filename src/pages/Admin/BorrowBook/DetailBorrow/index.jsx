@@ -1,9 +1,12 @@
 import React from 'react';
-
-const ListManager = () => {
+import {useDocumentTitle} from "../../../../hooks/useDocumentTitle";
+const DetailBorrow = () => {
+  useDocumentTitle('Detail borrow');
   return (
-    <div>ListManager</div>
+    <div>
+      <h1>DetailBorrow</h1>
+    </div>
   );
 };
 
-export default ListManager;
+export default DetailBorrow;

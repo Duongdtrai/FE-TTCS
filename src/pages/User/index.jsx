@@ -105,6 +105,7 @@ const HomePage = () => {
       {
         mock_data.length === 0 ? <Empty /> : 
           <>
+            <button type="button" className="btn btn-primary">Test boostrap</button>
             <Carousel>
               <div>
                 <h3 style={contentStyle}>

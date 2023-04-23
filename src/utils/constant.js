@@ -1,4 +1,10 @@
 export const ROLE = {
-  admin: 1,
-  user: 0
+  ADMIN: 1,
+  EMPLOYEE: 2, 
+  USER: 3
+};
+
+export const LOGIN = {
+  FAILED: false,
+  SUCCESS: true,
 };

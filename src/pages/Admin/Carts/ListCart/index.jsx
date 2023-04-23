@@ -2,7 +2,7 @@ import React from 'react';
 
 const ListCart = () => {
   return (
-    <div>ListCart</div>
+    <h1>The feature cart is under development</h1>
   );
 };
 

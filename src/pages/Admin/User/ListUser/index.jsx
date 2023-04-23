@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Space, Table, Tag, Button } from 'antd';
 import Pagination from "../../../../components/Pagination";
-import {useDocumentTitle} from "../../../../hooks/useDocumentTitle";
+import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
+
 const data = [
   {
     key: '1',
@@ -25,11 +26,11 @@ const data = [
     tags: ['cool', 'teacher'],
   },
 ];
-const ListBook = () => {
+const ListUser = () => {
+  useDocumentTitle('List user');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [refresh, setRefresh] = useState(true);
-  useDocumentTitle("List Book");
   const columns = [
     {
       title: 'FullName',
@@ -85,10 +86,10 @@ const ListBook = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">List Book</h1>
+      <h1 className="text-3xl">List User</h1>
       <Table columns={columns} dataSource={data} pagination={false} />;
-      <Pagination total={data.length} current={page}/>
+      <Pagination total={data.length} current={page} handleTableChange={handleTableChange}/>
     </div>
   );
 };
-export default ListBook;
+export default ListUser;

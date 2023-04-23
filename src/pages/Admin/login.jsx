@@ -3,28 +3,32 @@ import { Image } from 'antd';
 import { Button, Checkbox, Form, Input, notification } from 'antd';
 import Logo from "../../assets/images/logo.png";
 import { API } from '../../configs';
-import { setAdminId, setAdmin, setAdminToken } from "../../redux/slice/AuthAdminSlice";
+import { setAdminToken } from "../../redux/slice/AuthAdminSlice";
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
-import { ROLE } from "../../utils/constant";
+import { LOGIN } from "../../utils/constant";
 import { Redirect } from 'react-router-dom';
+import { useDocumentTitle } from "../../hooks/useDocumentTitle";
 
 const LoginAdmin = () => {
+  useDocumentTitle('Login');
   const authAdmin = useSelector((state) => state.authAdmin);
   const dispatch = useDispatch();
   const history = useHistory();
 
   const onFinish = async (values) => {
     API.loginAdmin({ username: values.username, password: values.password }).then((response) => {
+      if (response.data.status === LOGIN.FAILED) {
+        throw new Error(response.data.message);
+      }
       dispatch(setAdminToken(response.data));
       notification["success"]({
-        message: "Đăng nhập thành công",
+        message: response.data.message
       });
       history.push("/admin");
     }).catch((error) => {
       notification["error"]({
-        message: "Đăng nhập không thành công",
+        message: error.message
       });
     });
   };
@@ -105,7 +109,7 @@ const LoginAdmin = () => {
                   }}
                 >
                   <Button type="primary" htmlType="submit">
-                  Đăng nhập
+                    Đăng nhập
                   </Button>
                 </Form.Item>
               </Form>

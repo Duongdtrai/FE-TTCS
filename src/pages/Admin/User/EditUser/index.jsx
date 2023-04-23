@@ -1,11 +1,11 @@
 import React from 'react';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 
-const CreateStore = () => {
-  useDocumentTitle('Create store');
+const EditUser = () => {
+  useDocumentTitle('Edit user');
   return (
-    <div>CreateStore</div>
+    <div>EditUser</div>
   );
 };
 
-export default CreateStore;
+export default EditUser;

@@ -7,9 +7,12 @@ import {
   /**Admin */
   LoginAdmin,
   Error404,
-  ListManager,
-  CreateManager,
-  EditManager,
+  ListUser,
+  CreateUser,
+  EditUser,
+  ListEmployee,
+  CreateEmployee,
+  EditEmployee,
   DashBoard,
   ListBook,
   EditBook,
@@ -17,7 +20,13 @@ import {
   ListStore,
   CreateStore,
   EditStore,
-
+  ListRevenue,
+  CreateRevenue,
+  EditRevenue,
+  DetailBorrow,
+  ListBorrow,
+  ChangePassword,
+  Profile,
   /**User */
   LoginPage,
   HomePage,
@@ -65,16 +74,28 @@ const RoutesProvider = () => {
    */
   const PrivateAdminPages = [
     {
-      path: "/admin/list-manager",
-      component: <ListManager />,
+      path: "/admin/list-user",
+      component: <ListUser />,
     },
     {
-      path: "/admin/create-manager",
-      component: <CreateManager />,
+      path: "/admin/create-user",
+      component: <CreateUser />,
     },
     {
-      path: "/admin/edit-manager",
-      component: <EditManager />,
+      path: "/admin/edit-user",
+      component: <EditUser />,
+    },
+    {
+      path: "/admin/list-employee",
+      component: <ListEmployee />,
+    },
+    {
+      path: "/admin/create-employee",
+      component: <CreateEmployee />,
+    },
+    {
+      path: "/admin/edit-employee",
+      component: <EditEmployee />,
     },
     {
       path: "/admin/list-book",
@@ -107,6 +128,34 @@ const RoutesProvider = () => {
     {
       path: "/admin/edit-store/:storeId",
       component: <EditStore />,
+    },
+    {
+      path: "/admin/list-revenue",
+      component: <ListRevenue />,
+    },
+    {
+      path: "/admin/create-revenue",
+      component: <CreateRevenue />,
+    },
+    {
+      path: "/admin/edit-revenue",
+      component: <EditRevenue />,
+    },
+    {
+      path: "/admin/list-borrow",
+      component: <ListBorrow/>,
+    },
+    {
+      path: "/admin/detail-borrow",
+      component: <DetailBorrow />,
+    },
+    {
+      path: '/admin/change-password',
+      component: <ChangePassword />,
+    },
+    {
+      path: '/admin/profile',
+      component: <Profile />,
     },
     {
       path: "/admin",

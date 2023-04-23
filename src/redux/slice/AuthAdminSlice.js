@@ -13,17 +13,15 @@ const Slice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAdminId: (state, action) => {
-      state.adminId = action.payload.id;
-      state.is_loading = false;
-    },
     setAdmin: (state, action) => {
+      state.adminId = action.payload.id;
       state.user = action.payload.user;
+      state.role = action.payload.role;
       state.is_loading = false;
     },
     setAdminToken: (state, action) => {
       localStorage.setItem(STORAGE.accessTokenAdmin, action.payload.accessToken);
-      localStorage.setItem("adminId", action.payload.id);
+      localStorage.setItem(STORAGE.adminId, action.payload.id);
       state.adminId = action.payload.id;
       state.token = action.payload.accessToken;
       state.user = action.payload;
@@ -32,6 +30,8 @@ const Slice = createSlice({
     },
     logout: (state) => {
       localStorage.clear();
+      localStorage.removeItem(STORAGE.accessTokenAdmin);
+      localStorage.removeItem(STORAGE.adminId);
       state.adminId = 0;
       state.user = {};
       state.token = "";
@@ -41,5 +41,5 @@ const Slice = createSlice({
   }
 });
 
-export const {setAdminId, setAdmin, setAdminToken, logout} = Slice.actions;
+export const {setAdmin, setAdminToken, logout} = Slice.actions;
 export default Slice.reducer; 
