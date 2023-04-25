@@ -28,7 +28,7 @@ const LoginPage = () => {
 
   return (
     <div className='mt-24 h-full flex justify-center items-center'>
-      <div>
+      <div className='w-[500px]'>
         <Form
           name="normal_login"
           className="login-form"

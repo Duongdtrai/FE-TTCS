@@ -78,6 +78,7 @@ const leftMenuList = [
 const AppLayout = ({ children }) => {
   const user = useSelector((state) => state.authAdmin.user);
   const role = useSelector((state) => state.authAdmin.role);
+  const is_loading = useSelector((state) => state.authAdmin.is_loading);
   const [acceptMenu, setAcceptMenu] = useState(true);
   const [menuList, setMenuList] = useState(leftMenuList);
   const [collapsed, setCollapsed] = useState(false);
@@ -86,20 +87,21 @@ const AppLayout = ({ children }) => {
   const dispatch = useDispatch();
  
   useEffect(() => {
-    API.getDetailsUser().then((response) => {
-      dispatch(setAdmin(response.data));
-      if (response.data.role === ROLE.ADMIN && acceptMenu) {
-        let menu = menuList;
-        menu.splice(2, 0, {
-          key: '/admin/list-employee',
-          icon: <UserOutlined />,
-          label: 'Quản lý danh sách nhân viên',
-        },);
-        setMenuList(menu);
-        setAcceptMenu(false);
-      } 
-    });
-   
+    if (is_loading) {
+      API.getDetailsUser().then((response) => {
+        dispatch(setAdmin(response.data));
+        if (response.data.role === ROLE.ADMIN && acceptMenu) {
+          // let menu = menuList;
+          // menu.splice(2, 0, {
+          //   key: '/admin/list-employee',
+          //   icon: <UserOutlined />,
+          //   label: 'Quản lý danh sách nhân viên',
+          // },);
+          // setMenuList(menu);
+          setAcceptMenu(false);
+        } 
+      });
+    }
   }, []);
   // useEffect(() => {
   //   getUserInfo();
@@ -133,7 +135,7 @@ const AppLayout = ({ children }) => {
   };
   const handleMenuClick = (events) => {
     if (events.key) {
-      if (events.key === "/logout") {
+      if (events.key === "/admin/logout") {
         LogoutService.run(dispatch, { user: localStorage.getItem(STORAGE.adminId) }, onLogout);
         localStorage.clear();
         history.push("/admin/login");
@@ -158,7 +160,7 @@ const AppLayout = ({ children }) => {
   return (
     <Layout className="min-vh-100">
       <Header style={{ backgroundColor: 'white', borderBottom: '1px solid #c9c9c9', position: 'sticky', top: 0, zIndex: 1, width: '100%', display: 'flex' }} className='justify-between items-center'>
-        <div className="logo d-inline flex justify-between items-center">
+        <div className="logo d-inline !flex justify-between items-center">
           <img onClick={() => {
             history.push("/admin");
           }} src={logo} alt="Exponential Africa" className='logo'
@@ -168,7 +170,7 @@ const AppLayout = ({ children }) => {
         <div className="pe-3 d-inline float-end me-3">
           <Dropdown menu={menuProps} placement="bottomLeft">
             <a href="#" className="d-block" style={{ color: "#FFFFFF", overflow: "hidden", maxWidth: "75ch" }}>
-              <label className="text-overflow text-black" >{user?.fullName ? user?.fullName : 'Admin'}</label>&ensp;
+              <label className="text-overflow text-black" >{user?.username ? user?.username : 'Admin'}</label>&ensp;
               <AdminAvatar size={40} />
             </a>
           </Dropdown>

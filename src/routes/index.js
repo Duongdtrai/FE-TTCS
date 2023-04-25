@@ -170,7 +170,6 @@ const RoutesProvider = () => {
           <AppLayoutUser>
             <HomePage />
           </AppLayoutUser>
-
         </Route>
         <Route exact path="/admin/login">
           <LoginAdmin />

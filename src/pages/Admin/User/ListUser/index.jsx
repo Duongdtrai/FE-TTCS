@@ -1,80 +1,71 @@
-import React, { useState } from 'react';
-import { Space, Table, Tag, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Space, Table, Tag, Button, notification } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
+import { API } from "../../../../configs";
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
 const ListUser = () => {
-  useDocumentTitle('List user');
+  useDocumentTitle('Danh sách độc giả');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [listUser, setListUser] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(true);
+  useEffect(() => {
+    setLoading(true);
+    API.getAllUser().then(response => {
+      setListUser(response.data);
+      setLoading(false);
+    }).catch(error => {
+      notification["error"]({
+        message: "Lấy danh sách độc giả không thành công",
+      });
+    });
+  }, [refresh]);
   const columns = [
     {
-      title: 'FullName',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
+      title: 'Avatar',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      render: (_, record) => record.avatar ? record.avatar : '-'
     },
     {
-      title: 'Age',
+      title: 'Họ tên',
+      dataIndex: 'username',
+      key: 'username',
+      render: (_, record) => record.username ? record.username : '-'
+    },
+    {
+      title: 'Tuổi',
       dataIndex: 'age',
       key: 'age',
+      render: (_, record) => record.age ? record.age : '-'
     },
     {
-      title: 'Address',
+      title: 'Giới tính',
+      dataIndex: 'gender',
+      key: 'gender',
+      render: (_, record) => record.gender ? record.gender : '-'
+    },
+    {
+      title: 'Công việc',
+      dataIndex: 'job',
+      key: 'job',
+      render: (_, record) => record.job ? record.job : '-'
+    },
+    {
+      title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
+      render: (_, record) => record.address ? record.address : '-'
     },
+
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
-        <>
-          {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })}
-        </>
-      ),
-    },
-    {
-      title: 'Action',
+      title: '',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
           <Button type="primary">View</Button>
-          <Button type="primary" danger>Delete</Button>
         </Space>
       ),
     },
@@ -86,9 +77,9 @@ const ListUser = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">List User</h1>
-      <Table columns={columns} dataSource={data} pagination={false} />;
-      <Pagination total={data.length} current={page} handleTableChange={handleTableChange}/>
+      <h1 className="text-3xl">Danh sách độc giả</h1>
+      <Table columns={columns} dataSource={listUser} pagination={false} loading={loading} />;
+      <Pagination total={listUser.length} current={page} handleTableChange={handleTableChange} />
     </div>
   );
 };

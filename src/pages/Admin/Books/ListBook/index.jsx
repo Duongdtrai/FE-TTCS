@@ -1,35 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Space, Table, Tag, Button } from 'antd';
 import Pagination from "../../../../components/Pagination";
-import {useDocumentTitle} from "../../../../hooks/useDocumentTitle";
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'developer'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'teacher'],
-  },
-];
+import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
+import { API } from "../../../../configs";
+
 const ListBook = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [refresh, setRefresh] = useState(true);
-  useDocumentTitle("List Book");
+  const [loading, setLoading] = useState(false);
+  const [listBook, setListBook] = useState([]);
+  const history = useHistory();
+  useDocumentTitle("Danh sách Book");
+  useEffect(() => {
+    setLoading(true);
+    API.getAllBook().then(response => {
+      setListBook(response.data);
+      setLoading(false);
+    }).catch(error => {
+      notification["error"]({
+        message: "Lấy danh sách Book không thành công",
+      });
+    });
+  }, [refresh]);
+
   const columns = [
     {
       title: 'FullName',
@@ -72,8 +67,8 @@ const ListBook = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary">View</Button>
-          <Button type="primary" danger>Delete</Button>
+          <Button type="primary">Chi tiết</Button>
+          <Button type="primary" danger>Xóa</Button>
         </Space>
       ),
     },
@@ -85,9 +80,10 @@ const ListBook = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">List Book</h1>
-      <Table columns={columns} dataSource={data} pagination={false} />;
-      <Pagination total={data.length} current={page}/>
+      <h1 className="text-3xl">Danh sách Book</h1>
+      <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-book")}>Thêm book</Button>
+      <Table columns={columns} dataSource={listBook} pagination={false} loading={loading} />
+      <Pagination total={listBook.length} current={page} />
     </div>
   );
 };

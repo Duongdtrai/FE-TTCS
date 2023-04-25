@@ -5,7 +5,7 @@ export const initialState = {
   adminId: localStorage.getItem(STORAGE.adminId) || "",
   user: {},
   token: localStorage.getItem(STORAGE.accessTokenAdmin) || "",
-  is_loading: false,
+  is_loading: true,
   role: 0
 };
 
@@ -14,8 +14,8 @@ const Slice = createSlice({
   initialState,
   reducers: {
     setAdmin: (state, action) => {
-      state.adminId = action.payload.id;
-      state.user = action.payload.user;
+      // state.adminId = action.payload.id;
+      state.user = action.payload;
       state.role = action.payload.role;
       state.is_loading = false;
     },

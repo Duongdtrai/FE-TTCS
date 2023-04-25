@@ -1,60 +1,68 @@
-import React, { useState } from 'react';
-import { Space, Table, Tag, Button } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Space, Table, Tag, Button, notification } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
+import { useHistory } from 'react-router-dom';
+import { API } from "../../../../configs";
 
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-    tags: ['nice', 'Đã nghỉ việc'],
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-    tags: ['loser'],
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
-    tags: ['cool', 'Đang đi làm'],
-  },
-];
 const ListEmployee = () => {
-  useDocumentTitle('List employee');
+  useDocumentTitle('Danh sách nhân viên');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [listEmployee, setListEmployee] = useState([]);
   const [refresh, setRefresh] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const history = useHistory();
+  useEffect(() => {
+    setLoading(true);
+    API.getAllUser().then(response => {
+      setListEmployee(response.data);
+      setLoading(false);
+    }).catch(error => {
+      notification["error"]({
+        message: "Lấy danh sách nhân viên không thành công",
+      });
+    });
+  }, [refresh]);
   const columns = [
     {
-      title: 'FullName',
-      dataIndex: 'name',
-      key: 'name',
-      render: (text) => <a>{text}</a>,
+      title: 'Avatar',
+      dataIndex: 'avatar',
+      key: 'avatar',
+      render: (_, record) => record.avatar ? record.avatar : '-'
     },
     {
-      title: 'Age',
+      title: 'Họ tên',
+      dataIndex: 'username',
+      key: 'username',
+      render: (_, record) => record.username ? record.username : '-'
+    },
+    {
+      title: 'Tuổi',
       dataIndex: 'age',
       key: 'age',
+      render: (_, record) => record.age ? record.age : '-'
     },
     {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
+      title: 'Giới tính',
+      dataIndex: 'gender',
+      key: 'gender',
+      render: (_, record) => record.gender ? record.gender : '-'
     },
     {
-      title: 'Tags',
-      key: 'tags',
-      dataIndex: 'tags',
-      render: (_, { tags }) => (
+      title: 'Công việc',
+      dataIndex: 'job',
+      key: 'job',
+      render: (_, record) => record.job ? record.job : '-'
+    },
+    {
+      title: 'Trạng thái làm việc',
+      dataIndex: 'status',
+      key: 'status',
+      render: (_, record) => (
         <>
-          {tags.map((tag) => {
+          {record.status ? record.status : '-'}
+          {/* {tags.map((tag) => {
             let color = tag.length > 5 ? 'geekblue' : 'green';
             if (tag === 'loser') {
               color = 'volcano';
@@ -64,21 +72,29 @@ const ListEmployee = () => {
                 {tag.toUpperCase()}
               </Tag>
             );
-          })}
+          })} */}
         </>
       ),
     },
     {
-      title: 'Action',
+      title: 'Địa chỉ',
+      dataIndex: 'address',
+      key: 'address',
+      render: (_, record) => record.address ? record.address : '-'
+    },
+
+    {
+      title: '',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary">View</Button>
-          <Button type="primary" danger>Delete</Button>
+          <Button type="primary" onClick={() => history.push("/admin/edit-employee")}>Chi tiết</Button>
+          <Button type="primary" danger>Xóa</Button>
         </Space>
       ),
     },
   ];
+
   const handleTableChange = (page, size) => {
     setPage(page);
     setSize(size);
@@ -86,9 +102,10 @@ const ListEmployee = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">List Employee</h1>
-      <Table columns={columns} dataSource={data} pagination={false} />;
-      <Pagination total={data.length} current={page}/>
+      <h1 className="text-3xl">Danh sách nhân viên</h1>
+      <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-employee")}>Thêm nhân viên</Button>
+      <Table columns={columns} dataSource={listEmployee} pagination={false} loading={loading} />;
+      <Pagination total={listEmployee.length} current={page} />
     </div>
   );
 };

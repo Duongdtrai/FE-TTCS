@@ -76,7 +76,7 @@ const AppLayoutUser = ({children}) => {
         <div className="flex justify-center items-center">
           <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/")}>Trang chủ</div>
           <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/")}>Thể loại</div>
-          <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/author")}>Độc giả</div>
+          <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/author")}>Tác giả</div>
           <div> 
             <ShoppingCartOutlined className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/cart")}/>
           </div>

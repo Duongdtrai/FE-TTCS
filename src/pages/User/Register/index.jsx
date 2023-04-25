@@ -4,6 +4,7 @@ import { Form, Input, Button, Select, notification } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
 import { API } from "../../../configs";
 import {useDocumentTitle} from "../../../hooks/useDocumentTitle";
+
 const { Option } = Select;
 
 const RegisterPage = () => {
@@ -33,19 +34,21 @@ const RegisterPage = () => {
 
   return (
     <div className='h-full flex justify-center items-center'>
-      <div>
+      <div className='w-[500px]'>
         <Form
           name="normal_register"
           className="register-form"
           initialValues={{
             prefix: '86',
           }}
+          labelAlign="top"
           onFinish={onFinish}
         >
           <h1 style={{ textAlign: 'center' }}>Đăng ký</h1>
           <Form.Item
             label="Username"
             name="username"
+            labelAlign="top"
             rules={[
               {
                 required: true,
@@ -54,22 +57,6 @@ const RegisterPage = () => {
             ]}
           >
             <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-          </Form.Item>
-          <Form.Item
-            name="email"
-            label="Email"
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập trường này',
-              },
-              {
-                type: 'email',
-                message: 'Đây phải là email',
-              },
-            ]}
-          >
-            <Input prefix={<MailOutlined className="site-form-item-icon" />} placeholder="Email" />
           </Form.Item>
           <Form.Item
             name="password"
