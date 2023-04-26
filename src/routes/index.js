@@ -27,6 +27,9 @@ import {
   ListBorrow,
   ChangePassword,
   Profile,
+  ListAuthor,
+  CreateAuthor,
+  EditAuthor,
   /**User */
   LoginPage,
   HomePage,
@@ -86,6 +89,10 @@ const RoutesProvider = () => {
       component: <EditUser />,
     },
     {
+      path: "/admin/list-employee/:employeeId",
+      component: <EditEmployee />,
+    },
+    {
       path: "/admin/list-employee",
       component: <ListEmployee />,
     },
@@ -94,8 +101,8 @@ const RoutesProvider = () => {
       component: <CreateEmployee />,
     },
     {
-      path: "/admin/edit-employee",
-      component: <EditEmployee />,
+      path: "/admin/list-book/:bookId",
+      component: <EditBook />,
     },
     {
       path: "/admin/list-book",
@@ -105,10 +112,7 @@ const RoutesProvider = () => {
       path: "/admin/create-book",
       component: <CreateBook />,
     },
-    {
-      path: "/admin/edit-book",
-      component: <EditBook />,
-    },
+    
     {
       path: "/admin/list-cart",
       component: <ListCart />,
@@ -140,6 +144,18 @@ const RoutesProvider = () => {
     {
       path: "/admin/edit-revenue",
       component: <EditRevenue />,
+    },
+    {
+      path: "/admin/list-author",
+      component: <ListAuthor />,
+    },
+    {
+      path: "/admin/create-author",
+      component: <CreateAuthor />,
+    },
+    {
+      path: "/admin/edit-author",
+      component: <EditAuthor />,
     },
     {
       path: "/admin/list-borrow",

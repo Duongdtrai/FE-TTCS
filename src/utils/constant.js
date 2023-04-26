@@ -8,3 +8,13 @@ export const LOGIN = {
   FAILED: false,
   SUCCESS: true,
 };
+
+export const IMAGE_TYPES = {
+  jpeg : "image/jpeg",
+  png : "image/png",
+  jpg : "image/jpg",
+  tif : "image/tif",
+  heic : "image/heic",
+};
+
+export const DATE_FORMAT = "DD/MM/YYYY";

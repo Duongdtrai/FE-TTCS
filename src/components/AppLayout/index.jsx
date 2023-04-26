@@ -44,6 +44,11 @@ const leftMenuList = [
     label: 'Quản lý danh sách nhân viên',
   },
   {
+    key: '/admin/list-author',
+    icon: <UserOutlined />,
+    label: 'Quản lý danh sách tác giả',
+  },
+  {
     key: '/admin/list-book',
     icon: <BookOutlined />,
     label: 'Quản lý danh sách Book',

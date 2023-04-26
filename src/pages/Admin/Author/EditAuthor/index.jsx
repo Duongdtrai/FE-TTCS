@@ -1,44 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Form, Input, Button, Select, notification, DatePicker } from 'antd';
-import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
-import { useHistory, useParams } from "react-router-dom";
+import {useDocumentTitle} from "../../../../hooks/useDocumentTitle";
 import moment from 'moment';
-import { API } from '../../../../configs';
-import { DATE_FORMAT } from "../../../../utils/constant";
-const { Option } = Select;
+const {Option} = Select;
 
 
 const EditEmployee = () => {
   useDocumentTitle('Chỉnh sửa thông tin nhân viên');
-  const history = useHistory();
-  const { employeeId } = useParams();
-  const [loading, setLoading] = useState(false);
-  const [form] = Form.useForm();
-  useEffect(() => {
-    API.detailsUser(employeeId).then((response) => {
-      console.log("response.data", response.data);
-      form.setFieldsValue({
-        ...response.data,
-        birthday: response.data.birthday ? moment(response.data.birthday, DATE_FORMAT) : moment('01/01/2000', DATE_FORMAT)
-      });
-    }).catch(err => {
-      notification["error"]({
-        message: "Lấy nhân viên không thành công",
-      });
-    });
-  }, []);
   const onFinish = (values) => {
-    setLoading(true);
     API.register({ username: values.username, password: values.password }).then((response) => {
       notification["success"]({
-        message: "Sửa nhân viên thành công",
+        message: "Tạo nhân viên thành công",
       });
-      setLoading(false);
       history.push('/admin/list-employee');
     }).then((error) => {
-      setLoading(false);
       notification["error"]({
-        message: "Sửa nhân viên không thành công",
+        message: "Tạo nhân viên không thành công",
       });
     });
   };
@@ -47,11 +24,13 @@ const EditEmployee = () => {
     <div>
       <h1 className='text-3xl'>Chỉnh sửa nhân viên</h1>
       <Form
+        name="normal_register"
+        className="register-form"
+        initialValues={{
+          prefix: '86',
+        }}
         onFinish={onFinish}
         layout="vertical"
-        labelAlign="left"
-        colon={false}
-        form={form}
       >
         <Form.Item
           label="Username"
@@ -64,6 +43,20 @@ const EditEmployee = () => {
           ]}
         >
           <Input placeholder="Username" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          label="Mật khẩu"
+          rules={[
+            {
+              required: true,
+              message: 'Vui lòng nhập trường này',
+            },
+          ]}
+          hasFeedback
+          
+        >
+          <Input.Password placeholder="Mật khẩu" disabled/>
         </Form.Item>
         <Form.Item
           label="Giới tính"
@@ -86,8 +79,8 @@ const EditEmployee = () => {
           name="birthday"
         >
           <DatePicker
+            defaultValue={moment()}
             format="YYYY-MM-DD"
-            allowClear
           />
         </Form.Item>
         <Form.Item
@@ -124,8 +117,8 @@ const EditEmployee = () => {
           <Input style={{ width: '100%' }} placeholder="Địa chỉ" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="register-form-button" loading={loading}>
-            Chỉnh sửa
+          <Button type="primary" htmlType="submit" className="register-form-button">
+          Chỉnh sửa
           </Button>
         </Form.Item>
       </Form>

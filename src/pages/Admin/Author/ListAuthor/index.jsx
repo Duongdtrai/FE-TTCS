@@ -5,22 +5,22 @@ import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { useHistory } from 'react-router-dom';
 import { API } from "../../../../configs";
 
-const ListEmployee = () => {
-  useDocumentTitle('Danh sách nhân viên');
+const ListAuthor = () => {
+  useDocumentTitle('Danh sách tác giả');
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
-  const [listEmployee, setListEmployee] = useState([]);
+  const [listAuthor, setListAuthor] = useState([]);
   const [refresh, setRefresh] = useState(true);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   useEffect(() => {
     setLoading(true);
-    API.getAllUser().then(response => {
-      setListEmployee(response.data);
+    API.getAllAuthor().then(response => {
+      setListAuthor(response.data);
       setLoading(false);
     }).catch(error => {
       notification["error"]({
-        message: "Lấy danh sách nhân viên không thành công",
+        message: "Lấy danh sách tác giả không thành công",
       });
     });
   }, [refresh]);
@@ -88,7 +88,7 @@ const ListEmployee = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => history.push(`/admin/list-employee/${record.id}`)}>Chi tiết</Button>
+          <Button type="primary" onClick={() => history.push("/admin/edit-author")}>Chi tiết</Button>
           <Button type="primary" danger>Xóa</Button>
         </Space>
       ),
@@ -102,11 +102,11 @@ const ListEmployee = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách nhân viên</h1>
-      <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-employee")}>Thêm nhân viên</Button>
-      <Table columns={columns} dataSource={listEmployee} pagination={false} loading={loading} />;
-      <Pagination total={listEmployee.length} current={page} />
+      <h1 className="text-3xl">Danh sách tác giả</h1>
+      <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-author")}>Thêm tác giả</Button>
+      <Table columns={columns} dataSource={listAuthor} pagination={false} loading={loading} />;
+      <Pagination total={listAuthor.length} current={page} />
     </div>
   );
 };
-export default ListEmployee;
+export default ListAuthor;

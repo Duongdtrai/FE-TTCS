@@ -1,0 +1,80 @@
+import React, { useState }from 'react';
+import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Upload, message } from 'antd';
+import {IMAGE_TYPES} from "../../utils/constant";
+
+
+const getBase64 = (img, callback) => {
+  if (img) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+  }
+};
+  
+const beforeUpload = (file) => {
+  const isJpgOrPng =
+      file.type === IMAGE_TYPES.jpeg ||
+      file.type === IMAGE_TYPES.png ||
+      file.type === IMAGE_TYPES.jpg ||
+      file.type === IMAGE_TYPES.tif ||
+      file.type === IMAGE_TYPES.heic;
+  if (!isJpgOrPng) {
+    message.error("You can only upload JPG/PNG file!");
+  }
+  const isLt2M = file.size / 1024 / 1024 < 5;
+  if (!isLt2M) {
+    message.error("Image must smaller than 5MB!");
+  }
+};
+const UploadImage = (props) => {
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
+  const handleChange = (info) => {
+    getBase64(info.file.originFileObj, (url) => {
+      setLoading(false);
+      setImageUrl(url);
+    });
+  };
+  const onRemove = () => {
+    if (imageUrl) {
+      setImageUrl("");
+      // eslint-disable-next-line react/prop-types
+      props.uploadFile({});
+    }
+  };
+  const handleUpdateAvatar = (params) => {
+    // eslint-disable-next-line react/prop-types
+    props.uploadFile(params.file);
+  };
+  return (
+    <>
+      <Upload
+        accept="image/*"
+        multiple={false}
+        maxCount={1}
+        listType="picture-card"
+        showUploadList={{ showRemoveIcon: !!imageUrl }}
+        beforeUpload={beforeUpload}
+        onChange={handleChange}
+        customRequest={handleUpdateAvatar}
+        onRemove={onRemove}
+        disabled={loading}
+        fileList={[
+          {
+            uid: imageUrl,
+            name: imageUrl,
+            status: "done",
+            url: imageUrl ? imageUrl : imageUrl === null ? imageUrl : "",
+          },
+        ]}
+      >
+        <div>
+          <PlusOutlined />
+          <div style={{ marginTop: 8 }}>Upload</div>
+        </div>
+      </Upload>
+    </>
+  );
+};
+export default UploadImage;
