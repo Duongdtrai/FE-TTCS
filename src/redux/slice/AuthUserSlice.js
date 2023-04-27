@@ -14,18 +14,18 @@ const Slice = createSlice({
   reducers: {
     setUserId: (state, action) => {
       state.userId = action.payload.userId;
-      state.is_loading = false;
+      state.is_loading = true;
     },
     setUser: (state, action) => {
-      state.user = action.payload.user;
-      state.is_loading = false;
+      state.user = action.payload;
+      state.is_loading = true;
     },
     setUserToken: (state, action) => {
       localStorage.setItem(STORAGE.accessTokenUser, action.payload.accessToken);
       localStorage.setItem(STORAGE.userId, action.payload.id);
       state.userId = action.payload.id;
       state.accessTokenUser = action.payload.accessToken;
-      state.is_loading = false;
+      state.is_loading = true;
     },
     logout: (state) => {
       localStorage.clear();

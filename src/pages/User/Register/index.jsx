@@ -1,9 +1,11 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { Form, Input, Button, Select, notification } from 'antd';
-import { UserOutlined, LockOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons';
+import { Form, Input, Button, Select, notification, DatePicker } from 'antd';
 import { API } from "../../../configs";
 import {useDocumentTitle} from "../../../hooks/useDocumentTitle";
+import UploadImage from '../../../components/UploadImage';
+import { DATE_FORMAT } from "../../../utils/constant";
+import moment from "moment";
 
 const { Option } = Select;
 
@@ -11,27 +13,30 @@ const RegisterPage = () => {
   useDocumentTitle("Đăng ký");
   const history = useHistory();
   const onFinish = (values) => {
-    API.register({ username: values.username, password: values.password }).then((response) => {
+    delete values.avatar;
+    console.log({...values, birthday: moment(values.birthday).format(DATE_FORMAT)});
+    API.register({...values, birthday: moment(values.birthday).format(DATE_FORMAT)}).then((response) => {
       notification["success"]({
-        message: "Đăng ký tài khoản thành công",
+        message: "Tạo tài khoản thành công",
       });
       history.push('/login');
     }).then((error) => {
       notification["error"]({
-        message: "Đăng ký không thành công",
+        message: "Tạo tài khoản không thành công",
       });
     });
   };
-
-  const prefixSelector = (
-    <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>
-    </Form.Item>
-  );
-
+  const uploadFile = async (fileUpload) => {
+    setFile(fileUpload);
+    const formData = new FormData();
+    const emptyBlob = new Blob([""], { type: "text/plain" });
+    if (file && file?.name) {
+      formData.append("file", file, file.name);
+    } else {
+      formData.append("file", emptyBlob, "");
+    }
+    await API.uploadAvatarPerson(newPerson?.data.data.id, formData);
+  };
   return (
     <div className='h-full flex justify-center items-center'>
       <div className='w-[500px]'>
@@ -43,12 +48,14 @@ const RegisterPage = () => {
           }}
           labelAlign="top"
           onFinish={onFinish}
+          layout="vertical"
         >
-          <h1 style={{ textAlign: 'center' }}>Đăng ký</h1>
+          <Form.Item name="avatar" label="Ảnh">
+            <UploadImage uploadFile={uploadFile} />
+          </Form.Item>
           <Form.Item
             label="Username"
             name="username"
-            labelAlign="top"
             rules={[
               {
                 required: true,
@@ -56,11 +63,11 @@ const RegisterPage = () => {
               },
             ]}
           >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+            <Input placeholder="Username" />
           </Form.Item>
           <Form.Item
             name="password"
-            label="Password"
+            label="Mật khẩu"
             rules={[
               {
                 required: true,
@@ -69,33 +76,11 @@ const RegisterPage = () => {
             ]}
             hasFeedback
           >
-            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Password" />
+            <Input.Password placeholder="Mật khẩu" />
           </Form.Item>
           <Form.Item
-            label="Confirm password"
-            name="confirm"
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-              {
-                required: true,
-                message: 'Vui lòng nhập trường này',
-              },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error('Mật khẩu không trùng khớp, vui lòng nhập lại'));
-                },
-              }),
-            ]}
-          >
-            <Input.Password prefix={<LockOutlined className="site-form-item-icon" />} placeholder="Confirm Password" />
-          </Form.Item>
-          <Form.Item
-            label="Phone"
-            name="phone"
+            label="Giới tính"
+            name="gender"
             rules={[
               {
                 required: true,
@@ -103,12 +88,43 @@ const RegisterPage = () => {
               },
             ]}
           >
-            <Input prefix={<PhoneOutlined className="site-form-item-icon" />} style={{ width: '100%' }} placeholder="Phone Number" />
+            <Select placeholder="Giới tính">
+              <Option value="male">Nam</Option>
+              <Option value="female">Nữ</Option>
+              <Option value="other">Khác</Option>
+            </Select>
           </Form.Item>
-
-          <Form.Item className='text-center'>
+          <Form.Item
+            label="Ngày sinh"
+            name="birthday"
+          >
+            <DatePicker
+              style={{width: "100%"}}
+              placeholder='Ngày sinh'
+              format={DATE_FORMAT}
+            />
+          </Form.Item>
+          <Form.Item
+            label="Số diện thoại"
+            name="numberPhone"
+          >
+            <Input style={{ width: '100%' }} placeholder="Số điện thoại" />
+          </Form.Item>
+          <Form.Item
+            label="Công việc"
+            name="job"
+          >
+            <Input style={{ width: '100%' }} placeholder="Công việc" />
+          </Form.Item>
+          <Form.Item
+            label="Địa chỉ"
+            name="address"
+          >
+            <Input style={{ width: '100%' }} placeholder="Địa chỉ" />
+          </Form.Item>
+          <Form.Item>
             <Button type="primary" htmlType="submit" className="register-form-button">
-          Đăng ký
+        Tạo mới
             </Button>
           </Form.Item>
         </Form>
