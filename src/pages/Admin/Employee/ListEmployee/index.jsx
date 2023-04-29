@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Space, Table, Tag, Button, notification } from 'antd';
+import { Space, Table, Tag, Button, notification, Image } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { useHistory } from 'react-router-dom';
 import { API } from "../../../../configs";
+import UserDefault from "../../../../assets/images/user-default.png";
 
 const ListEmployee = () => {
   useDocumentTitle('Danh sách nhân viên');
@@ -13,6 +14,7 @@ const ListEmployee = () => {
   const [refresh, setRefresh] = useState(true);
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+
   useEffect(() => {
     setLoading(true);
     API.getAllUser().then(response => {
@@ -26,10 +28,17 @@ const ListEmployee = () => {
   }, [refresh]);
   const columns = [
     {
-      title: 'Avatar',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (_, record) => record.avatar ? record.avatar : '-'
+      title: 'Ảnh',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_, record) => <div> 
+        <Image
+          width={70}
+          height={70}
+          src={record.image ? `http://54.251.21.44/api/v1/file/${record.image}`: UserDefault}
+          style={{objectFit: 'contain'}}
+        />
+      </div> 
     },
     {
       title: 'Họ tên',
@@ -84,7 +93,7 @@ const ListEmployee = () => {
     },
 
     {
-      title: '',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">

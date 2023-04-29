@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Input, InputNumber, Select, DatePicker, Button, notification } from 'antd';
-import UploadImage from '../../../../components/UploadImage';
 const { Option } = Select;
 import './style.scss';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
@@ -21,7 +20,6 @@ const CreateBook = () => {
     });
   }, []);
   const handleSubmit = (values) => {
-    console.log("values", values);
     const newData = {
       title: values.title,
       description: values.description,
@@ -33,7 +31,7 @@ const CreateBook = () => {
     };
     setLoading(true);
     API.createNewBook(values.author, newData).then(response => {
-      notification["error"]({
+      notification["success"]({
         message: "Thêm sách thành công",
       });
       setLoading(false);
@@ -59,9 +57,6 @@ const CreateBook = () => {
     <div>
       <h1 className='text-3xl'>Thêm sách mới</h1>
       <Form layout="vertical" onFinish={handleSubmit}>
-        <Form.Item name="bookImage" label="Ảnh">
-          <UploadImage uploadFile={uploadFile} />
-        </Form.Item>
         <Form.Item name="title" label="Tiêu đề" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Tiêu đề' />
         </Form.Item>

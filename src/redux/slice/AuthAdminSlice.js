@@ -14,7 +14,6 @@ const Slice = createSlice({
   initialState,
   reducers: {
     setAdmin: (state, action) => {
-      // state.adminId = action.payload.id;
       state.user = action.payload;
       state.role = action.payload.role;
       state.is_loading = false;

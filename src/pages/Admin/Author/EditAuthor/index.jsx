@@ -15,9 +15,13 @@ const EditEmployee = () => {
   const { authorId } = useParams();
   const [authorInfor, setAuthorInfor] = useState({});
   const [loading, setLoading] = useState(false);
+  const [image,setImage] = useState(null);
   const [form] = Form.useForm();
   useEffect(() => {
     API.getDetailAuthor(authorId).then((response) => {
+      if (response.data.image){
+        setImage(`http://54.251.21.44/api/v1/file/${response.data.avatarBooks[0].avatar}`);
+      }
       setAuthorInfor(response.data);
       form.setFieldsValue({
         ...response.data,
@@ -52,8 +56,7 @@ const EditEmployee = () => {
       });
     });
   };
-  const uploadFile = async (fileUpload) => {
-    setFile(fileUpload);
+  const uploadFile = async (file) => {
     const formData = new FormData();
     const emptyBlob = new Blob([""], { type: "text/plain" });
     if (file && file?.name) {
@@ -61,8 +64,17 @@ const EditEmployee = () => {
     } else {
       formData.append("file", emptyBlob, "");
     }
-    await API.uploadAvatarPerson(newPerson?.data.data.id, formData);
+    await API.uploadAvatarAuthor(authorId, formData).then((response) => {
+      notification["success"]({
+        message: "Thêm ảnh tác giả thành công",
+      });
+    }).catch(error => {
+      notification["error"]({
+        message: "Tạo nhân viên không thành công",
+      });}
+    );
   };
+  
   return (
     <div>
       <h1 className='text-3xl'>Chỉnh sửa tác giả</h1>
@@ -74,7 +86,7 @@ const EditEmployee = () => {
         form={form}
       >
         <Form.Item name="bookImage" label="Ảnh">
-          <UploadImage uploadFile={uploadFile} />
+          <UploadImage uploadFile={uploadFile} image={image}/>
         </Form.Item>
         <Form.Item name="fullName" label="Họ và tên" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Họ và tên' />
@@ -98,8 +110,10 @@ const EditEmployee = () => {
         <Form.Item name="description" label="Mô tả" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input.TextArea className='w-full' placeholder='Mô tả' />
         </Form.Item>
+        
+        
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="register-form-button">
+          <Button type="primary" htmlType="submit" className="register-form-button" loading={loading}>
             Tạo mới
           </Button>
         </Form.Item>

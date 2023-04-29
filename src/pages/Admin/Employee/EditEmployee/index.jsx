@@ -16,7 +16,6 @@ const EditEmployee = () => {
   const [form] = Form.useForm();
   useEffect(() => {
     API.detailsUser(employeeId).then((response) => {
-      console.log("response.data", response.data);
       form.setFieldsValue({
         ...response.data,
         birthday: response.data.birthday ? moment(response.data.birthday, DATE_FORMAT) : moment('01/01/2000', DATE_FORMAT)
@@ -88,6 +87,7 @@ const EditEmployee = () => {
           <DatePicker
             format="YYYY-MM-DD"
             allowClear
+            style={{ width: "100%" }}
           />
         </Form.Item>
         <Form.Item

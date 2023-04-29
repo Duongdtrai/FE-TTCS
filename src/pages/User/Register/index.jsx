@@ -14,7 +14,6 @@ const RegisterPage = () => {
   const history = useHistory();
   const onFinish = (values) => {
     delete values.avatar;
-    console.log({...values, birthday: moment(values.birthday).format(DATE_FORMAT)});
     API.register({...values, birthday: moment(values.birthday).format(DATE_FORMAT)}).then((response) => {
       notification["success"]({
         message: "Tạo tài khoản thành công",

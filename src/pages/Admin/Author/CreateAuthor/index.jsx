@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Form, Input, InputNumber, Select, DatePicker, Button } from 'antd';
 import UploadImage from '../../../../components/UploadImage';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
@@ -9,13 +9,8 @@ import { useHistory } from 'react-router-dom';
 const { Option } = Select;
 const CreateAuthor = () => {
   useDocumentTitle("Thêm tác giả");
-  const [file, setFile] = useState();
   const history = useHistory();
-  useEffect(() => {
-    API.getAllAuthor().then(response => {
-      console.log("response", response.data);
-    });
-  }, []);
+
   const handleSubmit = (values) => {
     const dataAuthor = {
       fullName: values.fullName,
@@ -27,34 +22,20 @@ const CreateAuthor = () => {
     };
     API.createNewAuthor(dataAuthor).then((response) => {
       notification["error"]({
-        message: "Tạo tác giả thành công",
+        message: "Thêm tác giả thành công",
       });
       history.push("/admin/list-author");
     }).catch(error => {
       notification["error"]({
-        message: "Tạo tác giả không thành công",
+        message: "Thêm tác giả không thành công",
       });
     });
-    // const formData = new FormData();
-    // const emptyBlob = new Blob([""], { type: "text/plain" });
-    // if (file && file?.name) {
-    //   formData.append("file", file, file.name);
-    // } else {
-    //   formData.append("file", emptyBlob, "");
-    // }
-    //  API.uploadAvatarPerson(newPerson?.data.data.id, formData);
   };
-  const uploadFile = async (fileUpload) => {
-    setFile(fileUpload);
-    
-  };
+ 
   return (
     <div>
       <h1 className='text-3xl'>Thêm tác giả</h1>
       <Form layout="vertical" onFinish={handleSubmit}>
-        <Form.Item name="bookImage" label="Ảnh">
-          <UploadImage uploadFile={uploadFile} />
-        </Form.Item>
         <Form.Item name="fullName" label="Họ và tên" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Họ và tên' />
         </Form.Item>
@@ -69,7 +50,7 @@ const CreateAuthor = () => {
           <InputNumber className='w-full' placeholder='Tuổi' />
         </Form.Item>
         <Form.Item name="birthday" label="Ngày sinh" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <DatePicker placeholder='Ngày sinh' format={DATE_FORMAT} />
+          <DatePicker placeholder='Ngày sinh' format={DATE_FORMAT} style={{width: "100%"}}/>
         </Form.Item>
         <Form.Item name="address" label="Địa chỉ" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Địa chỉ' />

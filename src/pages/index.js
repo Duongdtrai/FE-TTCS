@@ -26,6 +26,7 @@ import Profile from "./Admin/Profile";
 import CreateAuthor from "./Admin/Author/CreateAuthor";
 import ListAuthor from "./Admin/Author/ListAuthor";
 import EditAuthor from "./Admin/Author/EditAuthor";
+import ListReturnBook from "./Admin/ReturnBook/ListReturn";
 /** User */
 import LoginPage from "../pages/User/Login";
 import HomePage from "../pages/User";
@@ -66,6 +67,8 @@ export {
   /** Admin - Screen List Borrow */
   DetailBorrow,
   ListBorrow,
+  /** Admin - Screen List Borrow */
+  ListReturnBook,
   /** Admin - Screen List Author */
   ListAuthor,
   CreateAuthor,
@@ -83,5 +86,5 @@ export {
   ProfilePage,
   // error
   Error404,
- 
+
 };

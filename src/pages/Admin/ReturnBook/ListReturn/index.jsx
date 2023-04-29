@@ -3,22 +3,22 @@ import { Space, Table, Tag, Button, notification } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { API } from "../../../../configs";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
-const ListBorrow = () => {
+const ListReturn = () => {
   useDocumentTitle("Quản lý mượn sách");
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
   const [refresh, setRefresh] = useState(true);
-  const [listBorrowBook, setListBorrowBook] = useState([]);
+  const [listReturnBook, setListReturnBook] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    API.getAllBorrowAdmin().then(response => {
-      setListBorrowBook(response.data);
+    API.getAllReturnAdmin().then(response => {
+      setListReturnBook(response.data);
       setLoading(false);
     }).catch(error => {
       notification["error"]({
-        message: "Lấy danh sách mượn sách không thành công",
+        message: "Lấy danh sách trả sách không thành công",
       });
     });
   }, [refresh]);
@@ -96,10 +96,10 @@ const ListBorrow = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách mượn sách</h1>
-      <Table columns={columns} dataSource={listBorrowBook} pagination={false} />
-      <Pagination total={listBorrowBook.length} current={page} handleTableChange={handleTableChange} />
+      <h1 className="text-3xl">Danh sách trả sách</h1>
+      <Table columns={columns} dataSource={listReturnBook} pagination={false} />
+      <Pagination total={listReturnBook.length} current={page} handleTableChange={handleTableChange} />
     </div>
   );
 };
-export default ListBorrow;
+export default ListReturn;
