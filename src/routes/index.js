@@ -45,34 +45,6 @@ import {
 
 const RoutesProvider = () => {
   /**
-   * @Role {user}
-   */
-  const PrivateUserPages = [
-    {
-      path: "/login",
-      component: <LoginPage />,
-    },
-    {
-      path: "/register",
-      component: <RegisterPage />,
-    },
-    {
-      path: "/author",
-      component: <AuthorPage />,
-    }, {
-      path: "/cart",
-      component: <CartPage />,
-    }, {
-      path: "/change-password",
-      component: <ChangePasswordPage />,
-    }, {
-      path: "/profile",
-      component: <ProfilePage />,
-    }
-  ];
-
-
-  /**
    * @Role {admin}
    */
   const PrivateAdminPages = [
@@ -112,7 +84,7 @@ const RoutesProvider = () => {
       path: "/admin/create-book",
       component: <CreateBook />,
     },
-    
+      
     {
       path: "/admin/list-cart",
       component: <ListCart />,
@@ -179,18 +151,45 @@ const RoutesProvider = () => {
     },
   ];
 
+  /**
+   * @Role {user}
+   */
+  const PrivateUserPages = [
+    {
+      path: "/login",
+      component: <LoginPage />,
+    },
+    {
+      path: "/register",
+      component: <RegisterPage />,
+    },
+    {
+      path: "/author",
+      component: <AuthorPage />,
+    }, {
+      path: "/cart",
+      component: <CartPage />,
+    }, {
+      path: "/change-password",
+      component: <ChangePasswordPage />,
+    }, {
+      path: "/profile",
+      component: <ProfilePage />,
+    }
+  ];
+
+
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path="/test/login">
+          <LoginAdmin />
+        </Route>
         <Route exact path="/">
           <AppLayoutUser>
             <HomePage />
           </AppLayoutUser>
         </Route>
-        <Route exact path="/test/login">
-          <LoginAdmin />
-        </Route>
-
         {PrivateAdminPages.map((i, index) => {
           return (
             <PrivateRouteAdmin path={i.path} key={index}>
