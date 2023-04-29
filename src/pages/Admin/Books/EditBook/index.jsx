@@ -16,11 +16,27 @@ const EditBook = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [listAuthor, setListAuthor] = useState([]);
+  const [image,setImage] = useState(null);
   useEffect(() => {
     API.getDetailBook(bookId).then(response => {
+      const timestamp = response.data.releaseDate;
+      const date = new Date(timestamp);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const getFullDay = `${day}/${month}/${year}`;
+      console.log(response.data.avatarBooks.length >= 1 && response.data.avatarBooks[0].avatar);
+      if (response.data.avatarBooks.length >= 1 && response.data.avatarBooks[0].avatar){
+        setImage(`http://54.251.21.44/api/v1/file/${response.data.avatarBooks[0].avatar}`);
+      }
       form.setFieldsValue({
-        ...response.data,
-        birthday: response.data.birthday ? moment(response.data.releaseDate, DATE_FORMAT) : moment('01/01/2000', DATE_FORMAT)
+        author: response.data.author.id,
+        category: response.data.category,
+        description: response.data.description,
+        initialQuantity: response.data.initialQuantity,
+        price: response.data.price,
+        title: response.data.title,
+        releaseDate: moment(getFullDay, DATE_FORMAT)
       });
       API.getAllAuthor().then(response => {
         setListAuthor(response.data);
@@ -41,8 +57,7 @@ const EditBook = () => {
       });
     });
   };
-  const uploadFile = async (fileUpload) => {
-    setFile(fileUpload);
+  const uploadFile = async (file) => {
     const formData = new FormData();
     const emptyBlob = new Blob([""], { type: "text/plain" });
     if (file && file?.name) {
@@ -50,7 +65,9 @@ const EditBook = () => {
     } else {
       formData.append("file", emptyBlob, "");
     }
-    await API.uploadAvatarPerson(newPerson?.data.data.id, formData);
+    await API.addImageBook(bookId, formData).then((response) => {
+      console.log("Duong");
+    });
   };
   return (
     <div>
@@ -62,7 +79,7 @@ const EditBook = () => {
         colon={false}
         form={form}>
         <Form.Item name="bookImage" label="Ảnh">
-          <UploadImage uploadFile={uploadFile} />
+          <UploadImage uploadFile={uploadFile} image={image}/>
         </Form.Item>
         <Form.Item name="title" label="Tiêu đề" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Tiêu đề' />
@@ -73,7 +90,7 @@ const EditBook = () => {
         </Form.Item>
 
         <Form.Item name="price" label="Giá tiền" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <InputNumber className='w-full' placeholder='giá tiền' />
+          <InputNumber className='w-full' placeholder='Giá tiền' />
         </Form.Item>
 
         <Form.Item name="author" label="Author" rules={[{ required: true }]}>
@@ -91,15 +108,16 @@ const EditBook = () => {
         </Form.Item>
 
         <Form.Item name="releaseDate" label="Ngày phát hành" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <DatePicker placeholder='Ngày phát hành' format={DATE_FORMAT} />
+          <DatePicker
+            placeholder='Ngày phát hành'
+            format={DATE_FORMAT}
+            style={{ width: "100%" }}
+            value={moment("2023-04-17 08:07:09", DATE_FORMAT)}
+          />
         </Form.Item>
 
         <Form.Item name="initialQuantity" label="Số lượng nhập" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <InputNumber className='w-full' placeholder='Số lượng nhập' />
-        </Form.Item>
-
-        <Form.Item name="numberBorrow" label="Number of Borrowed Books" rules={[{ required: true }]}>
-          <InputNumber />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit" className="register-form-button" loading={loading}>

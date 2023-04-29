@@ -146,16 +146,16 @@ const RoutesProvider = () => {
       component: <EditRevenue />,
     },
     {
+      path: "/admin/list-author/:authorId",
+      component: <EditAuthor />,
+    },
+    {
       path: "/admin/list-author",
       component: <ListAuthor />,
     },
     {
       path: "/admin/create-author",
       component: <CreateAuthor />,
-    },
-    {
-      path: "/admin/edit-author",
-      component: <EditAuthor />,
     },
     {
       path: "/admin/list-borrow",

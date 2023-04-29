@@ -21,8 +21,18 @@ const CreateBook = () => {
     });
   }, []);
   const handleSubmit = (values) => {
+    console.log("values", values);
+    const newData = {
+      title: values.title,
+      description: values.description,
+      price: values.price,
+      numberPage: values.numberPage,
+      releaseDate: moment(values.releaseDate).format("YYYY-MM-DD"),
+      category: values.category,
+      initialQuantity: values.initialQuantity
+    };
     setLoading(true);
-    API.createNewBook({...values, releaseDate: moment(values.releaseDate).format(DATE_FORMAT)}).then(response => {
+    API.createNewBook(values.author, newData).then(response => {
       notification["error"]({
         message: "Thêm sách thành công",
       });
@@ -80,7 +90,7 @@ const CreateBook = () => {
         </Form.Item>
 
         <Form.Item name="releaseDate" label="Ngày phát hành" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <DatePicker placeholder='Ngày phát hành' format={DATE_FORMAT} />
+          <DatePicker placeholder='Ngày phát hành' format={DATE_FORMAT} style={{width: "100%"}}/>
         </Form.Item>
 
         <Form.Item name="initialQuantity" label="Số lượng nhập" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>

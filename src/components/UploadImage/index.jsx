@@ -1,4 +1,4 @@
-import React, { useState }from 'react';
+import React, { useEffect, useState }from 'react';
 import { PlusOutlined, LoadingOutlined } from '@ant-design/icons';
 import { Upload, message } from 'antd';
 import {IMAGE_TYPES} from "../../utils/constant";
@@ -30,6 +30,11 @@ const beforeUpload = (file) => {
 const UploadImage = (props) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+  useEffect(() => {
+  // eslint-disable-next-line react/prop-types
+    setImageUrl(props.image);
+  // eslint-disable-next-line react/prop-types
+  }, [props.image]);
   const handleChange = (info) => {
     getBase64(info.file.originFileObj, (url) => {
       setLoading(false);

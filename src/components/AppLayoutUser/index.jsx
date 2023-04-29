@@ -26,11 +26,12 @@ const AppLayoutUser = ({ children }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // if (a)
     API.getDetailsUser().then((response) => {
       dispatch(setUser(response.data));
       setIsLogin(true);
     });
-  }, []);
+  }, [authUser]);
 
   const items = [
     {
@@ -49,16 +50,11 @@ const AppLayoutUser = ({ children }) => {
       icon: <PoweroffOutlined />,
     },
   ];
-  const onLogout = () => {
-    localStorage.removeItem(STORAGE.userId);
-    localStorage.removeItem(STORAGE.accessTokenUser);
-  };
+ 
   const handleMenuClick = (events) => {
     if (events.key) {
       if (events.key === "/logout") {
-        LogoutService.run(dispatch, { user: localStorage.getItem(STORAGE.adminId) }, onLogout);
-        localStorage.removeItem(STORAGE.userId);
-        localStorage.removeItem(STORAGE.accessTokenUser);
+        LogoutService.run(dispatch);
         setRefresh(!refresh);
       } else {
         history.push(events.key);

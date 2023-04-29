@@ -5,10 +5,12 @@ import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { DATE_FORMAT } from "../../../../utils/constant";
 import { API } from '../../../../configs';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 const { Option } = Select;
 const CreateAuthor = () => {
   useDocumentTitle("Thêm tác giả");
   const [file, setFile] = useState();
+  const history = useHistory();
   useEffect(() => {
     API.getAllAuthor().then(response => {
       console.log("response", response.data);
@@ -23,8 +25,15 @@ const CreateAuthor = () => {
       gender: values.gender,
       age: values.age,
     };
-    API.createNewBook(dataAuthor).then((response) => {
-      console.log("response", response);
+    API.createNewAuthor(dataAuthor).then((response) => {
+      notification["error"]({
+        message: "Tạo tác giả thành công",
+      });
+      history.push("/admin/list-author");
+    }).catch(error => {
+      notification["error"]({
+        message: "Tạo tác giả không thành công",
+      });
     });
     // const formData = new FormData();
     // const emptyBlob = new Blob([""], { type: "text/plain" });
@@ -41,7 +50,7 @@ const CreateAuthor = () => {
   };
   return (
     <div>
-      <h1 className='text-3xl'>Thêm tác giả mới</h1>
+      <h1 className='text-3xl'>Thêm tác giả</h1>
       <Form layout="vertical" onFinish={handleSubmit}>
         <Form.Item name="bookImage" label="Ảnh">
           <UploadImage uploadFile={uploadFile} />

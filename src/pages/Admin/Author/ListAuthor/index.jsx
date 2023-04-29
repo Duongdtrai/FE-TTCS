@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Space, Table, Tag, Button, notification } from 'antd';
+import { Space, Table, Tag, Button, notification, Popconfirm } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { useHistory } from 'react-router-dom';
@@ -16,6 +16,7 @@ const ListAuthor = () => {
   useEffect(() => {
     setLoading(true);
     API.getAllAuthor().then(response => {
+      console.log("response.data", response.data);
       setListAuthor(response.data);
       setLoading(false);
     }).catch(error => {
@@ -24,18 +25,19 @@ const ListAuthor = () => {
       });
     });
   }, [refresh]);
+
   const columns = [
     {
       title: 'Avatar',
       dataIndex: 'avatar',
       key: 'avatar',
-      render: (_, record) => record.avatar ? record.avatar : '-'
+      render: (_, record) => record.image ? record.image : '-'
     },
     {
       title: 'Họ tên',
-      dataIndex: 'username',
-      key: 'username',
-      render: (_, record) => record.username ? record.username : '-'
+      dataIndex: 'fullName',
+      key: 'fullName',
+      render: (_, record) => record.fullName ? record.fullName : '-'
     },
     {
       title: 'Tuổi',
@@ -50,33 +52,6 @@ const ListAuthor = () => {
       render: (_, record) => record.gender ? record.gender : '-'
     },
     {
-      title: 'Công việc',
-      dataIndex: 'job',
-      key: 'job',
-      render: (_, record) => record.job ? record.job : '-'
-    },
-    {
-      title: 'Trạng thái làm việc',
-      dataIndex: 'status',
-      key: 'status',
-      render: (_, record) => (
-        <>
-          {record.status ? record.status : '-'}
-          {/* {tags.map((tag) => {
-            let color = tag.length > 5 ? 'geekblue' : 'green';
-            if (tag === 'loser') {
-              color = 'volcano';
-            }
-            return (
-              <Tag color={color} key={tag}>
-                {tag.toUpperCase()}
-              </Tag>
-            );
-          })} */}
-        </>
-      ),
-    },
-    {
       title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
@@ -88,13 +63,49 @@ const ListAuthor = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => history.push("/admin/edit-author")}>Chi tiết</Button>
-          <Button type="primary" danger>Xóa</Button>
+          <Button type="primary" onClick={() => history.push(`/admin/list-author/${record.id}`)}>Chi tiết</Button>
+          {/* <Popconfirm
+            title="Xóa tác giả"
+            description="Bạn có muốn xóa tác giả không?"
+            okText="Yes"
+            cancelText="No"
+            // open={open}
+            // onConfirm={handleDeleteAuthor}
+            // okButtonProps={{ loading: confirmLoading }}
+            // onCancel={handleCancel}
+          >
+           
+          </Popconfirm> */}
+          <Button type="primary" danger onClick={handleDeleteAuthor(record.id)}>Xóa</Button>
         </Space>
       ),
     },
   ];
-
+  // const [open, setOpen] = useState(false);
+  // const [confirmLoading, setConfirmLoading] = useState(false);
+  // const showPopconfirm = () => {
+  //   setOpen(true);
+  // };
+  // const handleCancel = () => {
+  //   setOpen(false);
+  // };
+  const handleDeleteAuthor = (authorId) => {
+    // setConfirmLoading(true);
+    API.deleteAuthor(authorId).then(() => {
+      notification["error"]({
+        message: "Xóa tác giả thành công",
+      });
+      // setOpen(false);
+      // setConfirmLoading(false);
+      setRefresh(!refresh);
+    }).catch((error) => {
+      // setOpen(false);
+      // setConfirmLoading(false);
+      // notification["error"]({
+      //   message: "Xóa tác giả không thành công",
+      // });
+    });
+  };
   const handleTableChange = (page, size) => {
     setPage(page);
     setSize(size);
@@ -104,7 +115,7 @@ const ListAuthor = () => {
     <div>
       <h1 className="text-3xl">Danh sách tác giả</h1>
       <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-author")}>Thêm tác giả</Button>
-      <Table columns={columns} dataSource={listAuthor} pagination={false} loading={loading} />;
+      <Table columns={columns} dataSource={listAuthor} pagination={false} loading={loading} width={1000} />
       <Pagination total={listAuthor.length} current={page} />
     </div>
   );

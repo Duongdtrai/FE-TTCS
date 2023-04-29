@@ -28,7 +28,8 @@ const Slice = createSlice({
       state.is_loading = true;
     },
     logout: (state) => {
-      localStorage.clear();
+      localStorage.removeItem(STORAGE.userId);
+      localStorage.removeItem(STORAGE.accessTokenUser);
       state.userId = 0;
       state.user = {};
       state.accessTokenUser = "";

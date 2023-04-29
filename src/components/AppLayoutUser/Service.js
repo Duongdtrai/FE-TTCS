@@ -1,13 +1,12 @@
 import { notification } from "antd";
 import {API} from "../../configs";
-import {logout} from "../../redux/slice/AuthAdminSlice";
+import {logout} from "../../redux/slice/AuthUserSlice";
 
 export const LogoutService = {
-  run: (dispatch, params, onLogout) => {
+  run: (dispatch) => {
     API.logout()
-      .then((response) => {
+      .then(() => {
         dispatch(logout());
-        onLogout();
         notification["success"]({
           message: "Đăng xuất thành công",
         });

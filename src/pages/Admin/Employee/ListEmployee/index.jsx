@@ -104,7 +104,7 @@ const ListEmployee = () => {
     <div>
       <h1 className="text-3xl">Danh sách nhân viên</h1>
       <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-employee")}>Thêm nhân viên</Button>
-      <Table columns={columns} dataSource={listEmployee} pagination={false} loading={loading} />;
+      <Table columns={columns} dataSource={listEmployee} pagination={false} loading={loading} />
       <Pagination total={listEmployee.length} current={page} />
     </div>
   );
