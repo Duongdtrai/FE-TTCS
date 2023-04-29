@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter , Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { PrivateRouteAdmin } from "./PrivateRouteAdmin";
 import { PrivateRouteUser } from "./PrivateRouteUser";
 import AppLayoutUser from "../components/AppLayoutUser";
@@ -30,6 +30,7 @@ import {
   ListAuthor,
   CreateAuthor,
   EditAuthor,
+  ListReturnBook,
   /**User */
   LoginPage,
   HomePage,
@@ -42,8 +43,10 @@ import {
   EditCart,
 
 } from "../pages";
+import { useSelector } from "react-redux";
 
 const RoutesProvider = () => {
+  const is_login = useSelector((state) => state.authAdmin.is_loading);
   /**
    * @Role {admin}
    */
@@ -84,7 +87,7 @@ const RoutesProvider = () => {
       path: "/admin/create-book",
       component: <CreateBook />,
     },
-      
+
     {
       path: "/admin/list-cart",
       component: <ListCart />,
@@ -131,11 +134,15 @@ const RoutesProvider = () => {
     },
     {
       path: "/admin/list-borrow",
-      component: <ListBorrow/>,
+      component: <ListBorrow />,
     },
     {
       path: "/admin/detail-borrow",
       component: <DetailBorrow />,
+    },
+    {
+      path: "/admin/list-return-book",
+      component: <ListReturnBook />,
     },
     {
       path: '/admin/change-password',
@@ -188,7 +195,7 @@ const RoutesProvider = () => {
           </AppLayoutUser>
         </Route>
         <Route exact path="/admin/login">
-          <LoginAdmin />
+          {is_login ? <Redirect to="/admin" /> : <LoginAdmin />}
         </Route>
         {PrivateAdminPages.map((i, index) => {
           return (

@@ -21,32 +21,33 @@ import { ROLE } from '../../utils/constant';
 import { setAdmin } from "../../redux/slice/AuthAdminSlice";
 const { Header, Content, Sider } = Layout;
 
-const leftMenuList = [
+const leftMenuListAdmin = [
   {
     key: '/admin',
     icon: <DashboardOutlined />,
     label: 'Dashboard'
   },
   {
-    key: '/admin/list-user',
+    key: '/admin-user',
     icon: <UserOutlined />,
-    label: 'Quản lý danh sách độc giả',
-    // children: [
-    //   {
-    //     key: '/list-users',
-    //     label: "Users",
-    //   },
-    // ]
-  },
-  {
-    key: '/admin/list-employee',
-    icon: <UserOutlined />,
-    label: 'Quản lý danh sách nhân viên',
-  },
-  {
-    key: '/admin/list-author',
-    icon: <UserOutlined />,
-    label: 'Quản lý danh sách tác giả',
+    label: 'Quản lý người dùng',
+    children: [
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-user',
+        label: "Quản lý độc giả",
+      },
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-employee',
+        label: "Quản lý nhân viên",
+      },
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-author',
+        label: 'Quản lý tác giả',
+      },
+    ]
   },
   {
     key: '/admin/list-book',
@@ -54,11 +55,87 @@ const leftMenuList = [
     label: 'Quản lý danh sách Book',
   },
 
- 
+
   {
-    key: '/admin/list-borrow',
+    key: '/admin-borrow',
     icon: <PushpinOutlined />,
-    label: 'Quản lý mượn sách',
+    label: 'Quản lý trạng thái sách',
+    children: [
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-borrow',
+        label: "Quản lý mượn sách",
+      },
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-return-book',
+        label: "Quản lý trả sách",
+      },
+    ]
+  },
+
+  {
+    key: '/admin/list-store',
+    icon: <AppstoreOutlined />,
+    label: 'Quản lý kho',
+  },
+  {
+    key: '/admin/list-cart',
+    icon: <ShoppingCartOutlined />,
+    label: 'Quản lý giỏ hàng',
+  },
+  {
+    key: '/admin/list-revenue',
+    icon: <MoneyCollectOutlined />,
+    label: 'Quản lý doanh thu',
+  },
+];
+const leftMenuListEmployee = [
+  {
+    key: '/admin',
+    icon: <DashboardOutlined />,
+    label: 'Dashboard'
+  },
+  {
+    key: '/admin-user',
+    icon: <UserOutlined />,
+    label: 'Quản lý người dùng',
+    children: [
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-user',
+        label: "Quản lý độc giả",
+      },
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-author',
+        label: 'Quản lý tác giả',
+      },
+    ]
+  },
+  {
+    key: '/admin/list-book',
+    icon: <BookOutlined />,
+    label: 'Quản lý danh sách Book',
+  },
+
+
+  {
+    key: '/admin-borrow',
+    icon: <PushpinOutlined />,
+    label: 'Quản lý trạng thái sách',
+    children: [
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-borrow',
+        label: "Quản lý mượn sách",
+      },
+      {
+        icon: <UserOutlined />,
+        key: '/admin/list-return-book',
+        label: "Quản lý trả sách",
+      },
+    ]
   },
 
   {
@@ -84,27 +161,23 @@ const AppLayout = ({ children }) => {
   const user = useSelector((state) => state.authAdmin.user);
   const role = useSelector((state) => state.authAdmin.role);
   const is_loading = useSelector((state) => state.authAdmin.is_loading);
-  const [acceptMenu, setAcceptMenu] = useState(true);
-  const [menuList, setMenuList] = useState(leftMenuList);
+  const [menuList, setMenuList] = useState(role === ROLE.ADMIN ? leftMenuListAdmin : leftMenuListEmployee);
   const [collapsed, setCollapsed] = useState(false);
   // const updateAdmin = useSelector((state) => state.updateAdmin);
   const history = useHistory();
   const dispatch = useDispatch();
- 
+
   useEffect(() => {
     if (is_loading) {
       API.getDetailsUser().then((response) => {
         dispatch(setAdmin(response.data));
-        if (response.data.role === ROLE.ADMIN && acceptMenu) {
-          // let menu = menuList;
-          // menu.splice(2, 0, {
-          //   key: '/admin/list-employee',
-          //   icon: <UserOutlined />,
-          //   label: 'Quản lý danh sách nhân viên',
-          // },);
-          // setMenuList(menu);
-          setAcceptMenu(false);
-        } 
+        if (response.data.role === ROLE.ADMIN) {
+          setMenuList(leftMenuListAdmin);
+        } else if (response.data.role === ROLE.EMPLOYEE) {
+          setMenuList(leftMenuListEmployee);
+        }
+      }).catch(() => {
+        history.push("/admin/login");
       });
     }
   }, []);

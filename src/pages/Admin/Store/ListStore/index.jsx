@@ -86,7 +86,7 @@ const ListStore = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">List Statistic</h1>
+      <h1 className="text-3xl">Quản lý kho</h1>
       <Table columns={columns} dataSource={data} pagination={false} />;
       <Pagination total={data.length} current={page}/>
     </div>

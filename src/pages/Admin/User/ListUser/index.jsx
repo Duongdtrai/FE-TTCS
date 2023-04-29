@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Space, Table, Tag, Button, notification } from 'antd';
+import { Space, Table, Image, Button, notification } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { API } from "../../../../configs";
+import UserDefault from "../../../../assets/images/user-default.png";
 
 const ListUser = () => {
   useDocumentTitle('Danh sách độc giả');
@@ -24,10 +25,17 @@ const ListUser = () => {
   }, [refresh]);
   const columns = [
     {
-      title: 'Avatar',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (_, record) => record.avatar ? record.avatar : '-'
+      title: 'Ảnh',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_, record) => <div> 
+        <Image
+          width={70}
+          height={70}
+          src={record.image ? `http://54.251.21.44/api/v1/file/${record.image}`: UserDefault}
+          style={{objectFit: 'contain'}}
+        />
+      </div> 
     },
     {
       title: 'Họ tên',
@@ -65,7 +73,7 @@ const ListUser = () => {
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
-          <Button type="primary">View</Button>
+          <Button type="primary">Chi tiết</Button>
         </Space>
       ),
     },

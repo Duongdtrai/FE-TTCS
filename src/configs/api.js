@@ -20,6 +20,11 @@ const API = {
       Authorization: BearerToken()
     }
   }),
+  updateUser: (data) => http.post("auth/update", data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
   loginUser: (data) => http.post("auth/login", data),
   uploadImageUser: (data) => http.post("auth/avatar", data),
   detailsUser: (userId) => http.get(`auth/${userId}`, {
@@ -27,6 +32,12 @@ const API = {
       Authorization: BearerToken()
     }
   }),
+  changePassword: (data) => http.post("auth/changePassword", data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
   /** API BOOKS */
   getAllBook: () => http.get("book/all", {
     headers: {
@@ -82,6 +93,45 @@ const API = {
     }
   }),
   uploadAvatarAuthor: (authorId, data) => http.post(`author/avatar/${authorId}`, data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+  /** API BORROW BOOK */
+  getAllBorrowAdmin: () => http.get("borrowbook/all", {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+  getAllBorrowUser: () => http.get("borrowbook/get", {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+
+  borrowBookUser: (data, bookId) => http.post(`borrowbook/add/${bookId}`, data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+  /** API RETURN BOOK */
+  getAllReturnAdmin: () => http.get("returnbook/all", {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+  getAllReturnUser: () => http.get("returnbook/get", {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+  returnBookUser: (borrowBookId) => http.post(`returnbook/add/${borrowBookId}`, {
     headers: {
       Authorization: BearerToken()
     }

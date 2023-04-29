@@ -25,7 +25,6 @@ const EditBook = () => {
       const month = date.getMonth() + 1;
       const day = date.getDate();
       const getFullDay = `${day}/${month}/${year}`;
-      console.log(response.data.avatarBooks.length >= 1 && response.data.avatarBooks[0].avatar);
       if (response.data.avatarBooks.length >= 1 && response.data.avatarBooks[0].avatar){
         setImage(`http://54.251.21.44/api/v1/file/${response.data.avatarBooks[0].avatar}`);
       }
@@ -66,7 +65,13 @@ const EditBook = () => {
       formData.append("file", emptyBlob, "");
     }
     await API.addImageBook(bookId, formData).then((response) => {
-      console.log("Duong");
+      notification["error"]({
+        message: "Thêm ảnh thành công",
+      });
+    }).catch(err => {
+      notification["error"]({
+        message: "Thêm ảnh không thành công",
+      });
     });
   };
   return (

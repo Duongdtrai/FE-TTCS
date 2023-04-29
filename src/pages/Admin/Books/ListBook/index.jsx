@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Space, Table, Tag, Button, Popconfirm } from 'antd';
+import { Space, Table, Image, Button, Popconfirm } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { API } from "../../../../configs";
+import BookDefault from "../../../../assets/images/bookDefault.png";
 
 const ListBook = () => {
   const [page, setPage] = useState(1);
@@ -27,19 +28,32 @@ const ListBook = () => {
 
   const columns = [
     {
-      title: 'title',
+      title: 'Ảnh',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_, record) => <div>
+        <Image
+          width={70}
+          height={70}
+          src={record.avatarBooks[0]?.avatar ? `http://54.251.21.44/api/v1/file/${record.avatarBooks[0]?.avatar}` : BookDefault}
+          style={{ objectFit: 'contain' }}
+        />
+      </div>
+    },
+    {
+      title: 'Tên sách',
       dataIndex: 'title',
       key: 'title',
       render: (_, record) => <div>{record.title}</div>,
     },
     {
-      title: 'category',
+      title: 'Danh mục',
       dataIndex: 'category',
       key: 'category',
       render: (_, record) => <div>{record.category}</div>,
     },
     {
-      title: 'description',
+      title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
       render: (_, record) => <div>{record.description}</div>,
@@ -51,25 +65,25 @@ const ListBook = () => {
       render: (_, record) => record?.author.fullName ? (<div>{record?.author.fullName}</div>) : '-',
     },
     {
-      title: 'initialQuantity',
+      title: 'Số lượng ban đầu',
       dataIndex: 'initialQuantity',
       key: 'initialQuantity',
       render: (_, record) => <div>{record.initialQuantity}</div>,
     },
     {
-      title: 'numberPage',
+      title: 'Số lượng trang',
       dataIndex: 'numberPage',
       key: 'numberPage',
       render: (_, record) => <div>{record.numberPage}</div>,
     },
     {
-      title: 'price',
+      title: 'Giá',
       dataIndex: 'price',
       key: 'price',
       render: (_, record) => <div>{record.price} vnđ</div>,
     },
     {
-      title: 'releaseDate',
+      title: 'Ngày phát hành',
       dataIndex: 'releaseDate',
       key: 'releaseDate',
       render: (_, record) => {
@@ -104,20 +118,23 @@ const ListBook = () => {
     //   ),
     // },
     {
-      title: 'Action',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
-        <Space size="middle">
-          <Button type="primary" onClick={() => history.push(`/admin/list-book/${record.id}`)}>Chi tiết</Button>
-          <Popconfirm
-            title="Xóa sách"
-            description="Bạn có muốn xóa sách không?"
-            okText="Yes"
-            cancelText="No"
-          >
-            <Button type="primary" danger onClick={handleDeleteBook(record.id)}>Xóa</Button>
-          </Popconfirm>
-        </Space>
+        <div>
+          <Space size="middle">
+            <Button type="primary" onClick={() => history.push(`/admin/list-book/${record.id}`)}>Chi tiết</Button>
+            <Popconfirm
+              title="Xóa sách"
+              description="Bạn có muốn xóa sách không?"
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button type="primary" danger onClick={() => handleDeleteBook(record.id)}>Xóa</Button>
+            </Popconfirm>
+          </Space>
+        </div>
+
       ),
     },
   ];

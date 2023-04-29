@@ -22,11 +22,9 @@ const AppLayoutUser = ({ children }) => {
     token: { colorBgContainer },
   } = theme.useToken();
   const authUser = useSelector((state) => state.authUser);
-  console.log("authUser", authUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // if (a)
     API.getDetailsUser().then((response) => {
       dispatch(setUser(response.data));
       setIsLogin(true);

@@ -23,13 +23,12 @@ const CreateEmployee = () => {
     //   console.log("response", response);
     // });
     delete values.avatar;
-    console.log({...values, birthday: moment(values.birthday).format(DATE_FORMAT)});
-    API.register({...values, birthday: moment(values.birthday).format(DATE_FORMAT)}).then((response) => {
+    API.register({...values, birthday: moment(values.birthday).format(DATE_FORMAT)}).then(() => {
       notification["success"]({
         message: "Tạo nhân viên thành công",
       });
       history.push('/admin/list-employee');
-    }).then((error) => {
+    }).then(() => {
       notification["error"]({
         message: "Tạo nhân viên không thành công",
       });

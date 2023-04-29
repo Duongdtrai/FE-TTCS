@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Space, Table, Tag, Button, notification, Popconfirm } from 'antd';
+import { Space, Table, Image, Button, notification, Popconfirm } from 'antd';
 import Pagination from "../../../../components/Pagination";
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { useHistory } from 'react-router-dom';
 import { API } from "../../../../configs";
+import UserDefault from "../../../../assets/images/user-default.png";
 
 const ListAuthor = () => {
   useDocumentTitle('Danh sách tác giả');
@@ -16,7 +17,6 @@ const ListAuthor = () => {
   useEffect(() => {
     setLoading(true);
     API.getAllAuthor().then(response => {
-      console.log("response.data", response.data);
       setListAuthor(response.data);
       setLoading(false);
     }).catch(error => {
@@ -25,13 +25,19 @@ const ListAuthor = () => {
       });
     });
   }, [refresh]);
-
   const columns = [
     {
-      title: 'Avatar',
-      dataIndex: 'avatar',
-      key: 'avatar',
-      render: (_, record) => record.image ? record.image : '-'
+      title: 'Ảnh',
+      dataIndex: 'image',
+      key: 'image',
+      render: (_, record) => <div> 
+        <Image
+          width={70}
+          height={70}
+          src={record.image ? `http://54.251.21.44/api/v1/file/${record.image}`: UserDefault}
+          style={{objectFit: 'contain'}}
+        />
+      </div> 
     },
     {
       title: 'Họ tên',
@@ -59,12 +65,12 @@ const ListAuthor = () => {
     },
 
     {
-      title: '',
+      title: 'Hành động',
       key: 'action',
       render: (_, record) => (
         <Space size="middle">
           <Button type="primary" onClick={() => history.push(`/admin/list-author/${record.id}`)}>Chi tiết</Button>
-          {/* <Popconfirm
+          <Popconfirm
             title="Xóa tác giả"
             description="Bạn có muốn xóa tác giả không?"
             okText="Yes"
@@ -74,9 +80,9 @@ const ListAuthor = () => {
             // okButtonProps={{ loading: confirmLoading }}
             // onCancel={handleCancel}
           >
-           
-          </Popconfirm> */}
-          <Button type="primary" danger onClick={handleDeleteAuthor(record.id)}>Xóa</Button>
+            <Button type="primary" danger onClick={() => handleDeleteAuthor(record.id)}>Xóa</Button>
+          </Popconfirm>
+        
         </Space>
       ),
     },
@@ -115,7 +121,7 @@ const ListAuthor = () => {
     <div>
       <h1 className="text-3xl">Danh sách tác giả</h1>
       <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-author")}>Thêm tác giả</Button>
-      <Table columns={columns} dataSource={listAuthor} pagination={false} loading={loading} width={1000} />
+      <Table columns={columns} dataSource={listAuthor} pagination={false} loading={loading} />
       <Pagination total={listAuthor.length} current={page} />
     </div>
   );
