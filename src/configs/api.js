@@ -26,7 +26,11 @@ const API = {
     }
   }),
   loginUser: (data) => http.post("auth/login", data),
-  uploadImageUser: (data) => http.post("auth/avatar", data),
+  uploadImageUser: (data) => http.post("auth/avatar", data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
   detailsUser: (userId) => http.get(`auth/${userId}`, {
     headers: {
       Authorization: BearerToken()
