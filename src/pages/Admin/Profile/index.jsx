@@ -29,7 +29,7 @@ const Profile = () => {
     setLoading(true);
     API.updateUser(values).then(() => {
       setLoading(false);
-      notification["error"]({
+      notification["success"]({
         message: "Cập nhật thông tin thành công",
       });
     }).catch(err => {
