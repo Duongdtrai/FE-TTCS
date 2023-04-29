@@ -174,7 +174,7 @@ const RoutesProvider = () => {
       component: <Profile />,
     },
     {
-      path: "/admin",
+      path: "/test",
       component: <DashBoard />
     },
   ];
@@ -187,7 +187,7 @@ const RoutesProvider = () => {
             <HomePage />
           </AppLayoutUser>
         </Route>
-        <Route exact path="/admin/login">
+        <Route exact path="/test/login">
           <LoginAdmin />
         </Route>
 

@@ -25,7 +25,7 @@ const LoginAdmin = () => {
       notification["success"]({
         message: response.data.message
       });
-      history.push("/admin");
+      history.push("/test");
     }).catch((error) => {
       notification["error"]({
         message: error.message
@@ -36,7 +36,7 @@ const LoginAdmin = () => {
   return (
     <>
       {authAdmin?.accessTokenAdmin && authAdmin?.adminId ? (
-        <Redirect to="/admin" />
+        <Redirect to="/test" />
       ) : (
         <div className='w-full h-screen flex justify-center items-center'>
           <div className='grid grid-cols-12'>
