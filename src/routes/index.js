@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter , Switch, Route } from "react-router-dom";
 import { PrivateRouteAdmin } from "./PrivateRouteAdmin";
 import { PrivateRouteUser } from "./PrivateRouteUser";
 import AppLayoutUser from "../components/AppLayoutUser";
@@ -146,7 +146,7 @@ const RoutesProvider = () => {
       component: <Profile />,
     },
     {
-      path: "/test",
+      path: "/admin",
       component: <DashBoard />
     },
   ];
@@ -180,15 +180,15 @@ const RoutesProvider = () => {
 
 
   return (
-    <BrowserRouter>
+    <BrowserRouter >
       <Switch>
-        <Route exact path="/test/login">
-          <LoginAdmin />
-        </Route>
         <Route exact path="/">
           <AppLayoutUser>
             <HomePage />
           </AppLayoutUser>
+        </Route>
+        <Route exact path="/admin/login">
+          <LoginAdmin />
         </Route>
         {PrivateAdminPages.map((i, index) => {
           return (
@@ -209,7 +209,7 @@ const RoutesProvider = () => {
           <Error404 />
         </Route>
       </Switch>
-    </BrowserRouter>
+    </BrowserRouter >
   );
 };
 
