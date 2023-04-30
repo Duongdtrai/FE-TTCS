@@ -1,10 +1,13 @@
-import { Col, Row, Empty, Image, Button, Carousel } from 'antd';
-import React, { useState } from 'react';
+import { Col, Row, Empty, Image, Button, Carousel, notification } from 'antd';
+import React, { useEffect ,useState } from 'react';
 import Pagination from '../../components/Pagination';
+import { API } from '../../configs';
 
 const HomePage = () => {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(10);
+  const [listBooks, setListBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(true);
 
   const handleTableChange = (page, size) => {
@@ -12,86 +15,21 @@ const HomePage = () => {
     setSize(size);
     setRefresh(!refresh);
   };
+  
+  useEffect(() => {
+    setLoading(true);
+    API.getAllBook().then(response => {
+      setListBooks(response.data);
+      setLoading(false);
+    }).catch(error => {
+      notification["error"]({
+        message: "Lấy danh sách không thành công",
+      });
+    });
+  }, [refresh]);
 
-  const mock_data = [
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    },
-    {
-      id: "1",
-      author: "Phạm Tùng Dương",
-      image: "",
-      price: "20000",
-      star: 2
-    }
-  ];
+  const mock_data = listBooks;
+  
   const contentStyle = {
     height: '200px',
     color: '#fff',
