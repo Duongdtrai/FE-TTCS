@@ -3,7 +3,7 @@ export const BearerToken = () => {
   return `Bearer ${localStorage.getItem("accessTokenAdmin")}`;
 };
 export const BearerTokenUser = () => {
-  return `Bearer ${localStorage.getItem("accessTokenAdmin")}`;
+  return `Bearer ${localStorage.getItem("accessTokenUser")}`;
 };
 const API = {
   loginAdmin: (data) => http.post("auth/login", data),
@@ -48,6 +48,14 @@ const API = {
       Authorization: BearerToken()
     }
   }),
+
+  getAllBookUser: () => http.get("book/all", {
+    headers: {
+      Authorization: BearerTokenUser()
+    }
+  }),
+
+
   getDetailBook: (bookId) => http.get(`book/${bookId}`, {
     headers: {
       Authorization: BearerToken()

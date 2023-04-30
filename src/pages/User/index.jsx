@@ -18,7 +18,7 @@ const HomePage = () => {
   
   useEffect(() => {
     setLoading(true);
-    API.getAllBook().then(response => {
+    API.getAllBookUser().then(response => {
       setListBooks(response.data);
       setLoading(false);
     }).catch(error => {
