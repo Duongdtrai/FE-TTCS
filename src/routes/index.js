@@ -195,7 +195,8 @@ const RoutesProvider = () => {
           </AppLayoutUser>
         </Route>
         <Route exact path="/admin/login">
-          {is_login ? <Redirect to="/admin" /> : <LoginAdmin />}
+          <LoginAdmin />
+          {/* {is_login ? <Redirect to="/admin" /> : <LoginAdmin />} */}
         </Route>
         {PrivateAdminPages.map((i, index) => {
           return (

@@ -19,8 +19,8 @@ const EditEmployee = () => {
   const [form] = Form.useForm();
   useEffect(() => {
     API.getDetailAuthor(authorId).then((response) => {
-      if (response.data.image){
-        setImage(`http://54.251.21.44/api/v1/file/${response.data.avatarBooks[0].avatar}`);
+      if (response.data.avatar){
+        setImage(`http://54.251.21.44/api/v1/file/${response.data.avatar}`);
       }
       setAuthorInfor(response.data);
       form.setFieldsValue({
