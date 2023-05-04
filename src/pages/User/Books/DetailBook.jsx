@@ -169,7 +169,7 @@ const DetailBook = () => {
                     <p>{item.comment}</p>
                   </Col>
                 </Row>
-                {index === listComments.length - 1 && <hr></hr>}
+                {index !== listComments.length - 1 && <hr></hr>}
               </Col>
             );
           })
