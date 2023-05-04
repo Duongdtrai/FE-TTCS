@@ -35,7 +35,9 @@ import AuthorPage from "./User/Author";
 import CartPage from "./User/Cart";
 import ChangePasswordPage from "./User/ChangePassword";
 import ProfilePage from "./User/Profile";
-
+import DetailAuthor from "../pages/User/Author/DetailAuthor";
+import Category from "../pages/User/Category";
+import DetailBook from "../pages/User/Books/DetailBook";
 
 export {
   /** Admin */
@@ -84,6 +86,9 @@ export {
   CartPage,
   ChangePasswordPage,
   ProfilePage,
+  DetailAuthor,
+  Category,
+  DetailBook,
   // error
   Error404,
 

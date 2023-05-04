@@ -14,6 +14,9 @@ const LoginPage = () => {
   const onFinish = (values) => {
     API.loginUser({ username: values.username, password: values.password })
       .then((response) => {
+        if (response.data.status === false) {
+          throw new Error(response.data.message);
+        }
         dispatch(setUserToken(response.data));
         notification["success"]({
           message: "Đăng nhập thành công",
@@ -21,7 +24,7 @@ const LoginPage = () => {
         history.push("/");
       }).catch((error) => {
         notification["error"]({
-          message: "Đăng nhập không thành công",
+          message: error.message || "Đăng nhập không thành công",
         });
       });
   };

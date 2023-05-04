@@ -1,21 +1,16 @@
-import { Col, Row, Empty, Image, Button, Carousel, notification } from 'antd';
 import React, { useEffect, useState } from 'react';
-import Pagination from '../../components/Pagination';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Col, Row, Empty, Image, Button, notification } from 'antd';
 import { API } from '../../configs';
+import BookDefault from "../../assets/images/bookDefault.png";
 
 const HomePage = () => {
-  const [page, setPage] = useState(1);
-  const [size, setSize] = useState(10);
-  const [listBooks, setListBooks] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [listBooks, setListBooks] = useState([]);
   const [refresh, setRefresh] = useState(true);
-
-  const handleTableChange = (page, size) => {
-    setPage(page);
-    setSize(size);
-    setRefresh(!refresh);
-  };
-
+  const is_login = useSelector((state) => state.authUser.is_loading);
+  const history = useHistory();
   useEffect(() => {
     setLoading(true);
     API.getAllBook().then((response) => {
@@ -26,90 +21,42 @@ const HomePage = () => {
         message: "Lấy danh sách không thành công",
       });
     });
-  });
+  }, []);
 
 
-  const contentStyle = {
-    height: '200px',
-    color: '#fff',
-    lineHeight: '160px',
-    textAlign: 'center',
-    background: '#364d79',
-    border: "1px solid black"
+  const handleBorrowBook = (bookId) => {
+    if (is_login) {
+      history.push(`books/${bookId}`);
+    } else {
+      notification["error"]({
+        message: "Vui lòng đăng nhập"
+      });
+    }
   };
   return (
     <>
       {
         listBooks.length === 0 ? <Empty /> :
           <>
-            <button type="button" className="btn btn-primary">Test boostrap</button>
-            <Carousel>
-              <div>
-                <h3 style={contentStyle}>
-                  <Image
-                    preview={false}
-                    src="https://salt.tikicdn.com/cache/w1240/ts/brickv2og/de/2b/e1/6c050d9f840361d190ec848fa71d2b69.png.webp"
-                    style={{ height: '200px', width: '100%' }}
-                  />
-                </h3>
-              </div>
-              <div>
-                <h3 style={contentStyle}>
-                  <Image
-                    preview={false}
-                    src="https://salt.tikicdn.com/cache/w1240/ts/brickv2og/de/2b/e1/6c050d9f840361d190ec848fa71d2b69.png.webp"
-                    style={{ height: '200px', width: '100%' }}
-                  />
-                </h3>
-
-              </div>
-              <div>
-                <h3 style={contentStyle}>
-                  <Image
-                    preview={false}
-                    src="https://salt.tikicdn.com/cache/w1240/ts/brickv2og/de/2b/e1/6c050d9f840361d190ec848fa71d2b69.png.webp"
-                    style={{ height: '200px', width: '100%' }}
-                  />
-                </h3>
-              </div>
-              <div>
-                <h3 style={contentStyle}>
-                  <Image
-                    preview={false}
-                    src="https://salt.tikicdn.com/cache/w1240/ts/brickv2og/de/2b/e1/6c050d9f840361d190ec848fa71d2b69.png.webp"
-                    style={{ height: '200px', width: '100%' }}
-                  />
-                </h3>
-              </div>
-            </Carousel>
+            <h3>Danh sách Book</h3>
             <Row gutter={[8, 16]}>
               {
                 listBooks.map((item, index) => {
                   return (
-                    <div key={index}>
-                      <Col span={6}>
-                        <Image
-                          width={200}
-                          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        />
-                        <div>
-                          {item.author.fullName}
-                        </div>
-                        <div>{item.price}</div>
-                        <Button type="primary">Đặt mua</Button>
-                        <Button type="danger">Mượn sách</Button>
-                      </Col>
-                    </div>
+                    <Col span={6} key={index} style={{ width: "100%" }}>
+                      <Image
+                        style={{ width: "100%", height: "300px", objectFit: "contain" }}
+                        src={item.avatarBooks && item.avatarBooks.length > 0 ? `http://54.251.21.44/api/v1/file/${item.avatarBooks[0].avatar}` : BookDefault}
+                      />
+                      <div><span style={{ fontWeight: 500 }}>Tên sách: </span>{item.title}</div>
+                      <div><span style={{ fontWeight: 500 }}>Tác giả: </span>{item.author.fullName}</div>
+                      <div><span style={{ fontWeight: 500 }}>Mô tả: </span>{item.description}</div>
+                      <Button type='primary' onClick={()=> handleBorrowBook(item.id)}>Mượn sách</Button>
+                    </Col>
                   );
                 })
               }
-
             </Row>
-            <Pagination
-              total={listBooks.length}
-              handleTableChange={handleTableChange}
-              current={1}
-            />
           </>
       }
     </>

@@ -1,10 +1,10 @@
 import { notification } from "antd";
-import {API} from "../../configs";
-import {logout} from "../../redux/slice/AuthUserSlice";
+import { API } from "../../configs";
+import { logout } from "../../redux/slice/AuthUserSlice";
 
 export const LogoutService = {
   run: (dispatch) => {
-    API.logout()
+    API.logoutUser()
       .then(() => {
         dispatch(logout());
         notification["success"]({

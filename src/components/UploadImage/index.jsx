@@ -30,11 +30,13 @@ const beforeUpload = (file) => {
 const UploadImage = (props) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState();
+
   useEffect(() => {
   // eslint-disable-next-line react/prop-types
     setImageUrl(props.image);
   // eslint-disable-next-line react/prop-types
   }, [props.image]);
+
   const handleChange = (info) => {
     getBase64(info.file.originFileObj, (url) => {
       setLoading(false);

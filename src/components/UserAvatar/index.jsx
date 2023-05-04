@@ -7,7 +7,7 @@ import Logo from "../../assets/images/logo.png";
 
 
 // eslint-disable-next-line react/prop-types
-const UserAvartar = ({size}) => {
+const UserAvartar = ({size, image}) => {
   // const auth = useSelector((state) => state.auth);
   // const updateAdmin = useSelector((state) => state.updateAdmin);
   // const [image, setImage] = useState(updateAdmin.image);
@@ -15,7 +15,7 @@ const UserAvartar = ({size}) => {
   //   setImage(updateAdmin.image);
   // }, [updateAdmin.image]);
   // const avatar = getDefValue(auth.user, "avatar");
-  return <Avatar size={size} icon={<UserOutlined/>}/>;
+  return <Avatar src={image} size={size} icon={<UserOutlined/>}/>;
   // if (avatar !== "") {
   //   return (
   //     <Avatar

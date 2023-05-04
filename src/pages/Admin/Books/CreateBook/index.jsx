@@ -3,10 +3,10 @@ import { Form, Input, InputNumber, Select, DatePicker, Button, notification } fr
 const { Option } = Select;
 import './style.scss';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
-import { DATE_FORMAT } from "../../../../utils/constant";
+import { DATE_FORMAT, CATEGORY } from "../../../../utils/constant";
 import moment from 'moment';
-import {API} from '../../../../configs';
-import {useHistory} from 'react-router-dom';
+import { API } from '../../../../configs';
+import { useHistory } from 'react-router-dom';
 
 const CreateBook = () => {
   useDocumentTitle("Thêm sách");
@@ -40,7 +40,7 @@ const CreateBook = () => {
       notification["error"]({
         message: "Thêm sách không thành công",
       });
-    }); 
+    });
   };
   const uploadFile = async (fileUpload) => {
     setFile(fileUpload);
@@ -77,22 +77,31 @@ const CreateBook = () => {
         </Form.Item>
 
         <Form.Item name="numberPage" label="Số lượng trang" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <InputNumber className='w-full' placeholder='Số lượng trang'/>
+          <InputNumber className='w-full' placeholder='Số lượng trang' />
         </Form.Item>
 
-        <Form.Item name="category" label="Category" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input className='w-full' placeholder='Số lượng trang'/>
+        <Form.Item name="category" label="Thể loại" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+          <Select placeholder="Thể loại">
+            <Option value={CATEGORY.ccpl.value}>{CATEGORY.ccpl.title}</Option>
+            <Option value={CATEGORY.khcn.value}>{CATEGORY.khcn.title}</Option>
+            <Option value={CATEGORY.vhnt.value}>{CATEGORY.vhnt.title}</Option>
+            <Option value={CATEGORY.vhxh.value}>{CATEGORY.vhxh.title}</Option>
+            <Option value={CATEGORY.gt.value}>{CATEGORY.gt.title}</Option>
+            <Option value={CATEGORY.ttt.value}>{CATEGORY.ttt.title}</Option>
+            <Option value={CATEGORY.tttltg.value}>{CATEGORY.tttltg.title}</Option>
+            <Option value={CATEGORY.stn.value}>{CATEGORY.stn.title}</Option>
+          </Select>
         </Form.Item>
 
         <Form.Item name="releaseDate" label="Ngày phát hành" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <DatePicker placeholder='Ngày phát hành' format={DATE_FORMAT} style={{width: "100%"}}/>
+          <DatePicker placeholder='Ngày phát hành' format={DATE_FORMAT} style={{ width: "100%" }} />
         </Form.Item>
 
         <Form.Item name="initialQuantity" label="Số lượng nhập" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <InputNumber className='w-full' placeholder='Số lượng nhập' />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit" className="register-form-button" loading = {loading}>
+          <Button type="primary" htmlType="submit" className="register-form-button" loading={loading}>
             Tạo mới
           </Button>
         </Form.Item>

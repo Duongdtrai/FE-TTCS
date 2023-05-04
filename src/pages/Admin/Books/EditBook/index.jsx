@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, InputNumber, Select, DatePicker, Upload, Button } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-const { Option } = Select;
+import { Form, Input, InputNumber, Select, DatePicker, notification, Button } from 'antd';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { useHistory, useParams } from 'react-router-dom';
 import { API } from '../../../../configs';
-import { DATE_FORMAT } from "../../../../utils/constant";
+import { DATE_FORMAT, CATEGORY } from "../../../../utils/constant";
 import moment from 'moment';
 import UploadImage from '../../../../components/UploadImage';
+
+const { Option } = Select;
 
 const EditBook = () => {
   useDocumentTitle("Sửa sách");
@@ -16,7 +16,7 @@ const EditBook = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(false);
   const [listAuthor, setListAuthor] = useState([]);
-  const [image,setImage] = useState(null);
+  const [image, setImage] = useState(null);
   useEffect(() => {
     API.getDetailBook(bookId).then(response => {
       const timestamp = response.data.releaseDate;
@@ -25,7 +25,7 @@ const EditBook = () => {
       const month = date.getMonth() + 1;
       const day = date.getDate();
       const getFullDay = `${day}/${month}/${year}`;
-      if (response.data.avatarBooks.length >= 1 && response.data.avatarBooks[0].avatar){
+      if (response.data.avatarBooks.length >= 1 && response.data.avatarBooks[0].avatar) {
         setImage(`http://54.251.21.44/api/v1/file/${response.data.avatarBooks[0].avatar}`);
       }
       form.setFieldsValue({
@@ -33,6 +33,7 @@ const EditBook = () => {
         category: response.data.category,
         description: response.data.description,
         initialQuantity: response.data.initialQuantity,
+        numberPage: response.data.numberPage,
         price: response.data.price,
         title: response.data.title,
         releaseDate: moment(getFullDay, DATE_FORMAT)
@@ -44,15 +45,17 @@ const EditBook = () => {
   }, []);
   const handleSubmit = (values) => {
     setLoading(true);
-    API.createNewBook({ ...values, releaseDate: moment(values.releaseDate).format(DATE_FORMAT) }).then(response => {
+    const dataEdit = { ...values, releaseDate: moment(values.releaseDate).format(DATE_FORMAT) };
+    API.updateBook(dataEdit, bookId, values.author).then(response => {
       notification["error"]({
-        message: "Thêm sách thành công",
+        message: "Sửa sách thành công",
       });
       setLoading(false);
       history.push("/admin/list-book");
     }).catch(err => {
+      setLoading(false);
       notification["error"]({
-        message: "Thêm sách không thành công",
+        message: "Sửa sách không thành công",
       });
     });
   };
@@ -84,7 +87,7 @@ const EditBook = () => {
         colon={false}
         form={form}>
         <Form.Item name="bookImage" label="Ảnh">
-          <UploadImage uploadFile={uploadFile} image={image}/>
+          <UploadImage uploadFile={uploadFile} image={image} />
         </Form.Item>
         <Form.Item name="title" label="Tiêu đề" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Tiêu đề' />
@@ -108,8 +111,17 @@ const EditBook = () => {
         <Form.Item name="numberPage" label="Số lượng trang" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <InputNumber className='w-full' placeholder='Số lượng trang' />
         </Form.Item>
-        <Form.Item name="category" label="Category" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input className='w-full' placeholder='Số lượng trang' />
+        <Form.Item name="category" label="Thể loại" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+          <Select placeholder="Thể loại">
+            <Option value={CATEGORY.ccpl.value}>{CATEGORY.ccpl.title}</Option>
+            <Option value={CATEGORY.khcn.value}>{CATEGORY.khcn.title}</Option>
+            <Option value={CATEGORY.vhnt.value}>{CATEGORY.vhnt.title}</Option>
+            <Option value={CATEGORY.vhxh.value}>{CATEGORY.vhxh.title}</Option>
+            <Option value={CATEGORY.gt.value}>{CATEGORY.gt.title}</Option>
+            <Option value={CATEGORY.ttt.value}>{CATEGORY.ttt.title}</Option>
+            <Option value={CATEGORY.tttltg.value}>{CATEGORY.tttltg.title}</Option>
+            <Option value={CATEGORY.stn.value}>{CATEGORY.stn.title}</Option>
+          </Select>
         </Form.Item>
 
         <Form.Item name="releaseDate" label="Ngày phát hành" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>

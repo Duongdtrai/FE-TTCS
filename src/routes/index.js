@@ -41,7 +41,9 @@ import {
   ProfilePage,
   ListCart,
   EditCart,
-
+  DetailAuthor,
+  Category,
+  DetailBook
 } from "../pages";
 import { useSelector } from "react-redux";
 
@@ -171,9 +173,22 @@ const RoutesProvider = () => {
       component: <RegisterPage />,
     },
     {
+      path: "/category",
+      component: <Category />,
+    },
+    {
+      path: "/author/:authorId",
+      component: <DetailAuthor />,
+    },
+    {
       path: "/author",
       component: <AuthorPage />,
-    }, {
+    },
+    {
+      path: "/books/:bookId",
+      component: <DetailBook />,
+    },
+    {
       path: "/cart",
       component: <CartPage />,
     }, {

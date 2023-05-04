@@ -15,10 +15,11 @@ import { Dropdown, Layout, Menu } from 'antd';
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { LogoutService } from "./Service";
-import AdminAvatar from "../AdminAvatar";
+import UserAvatar from "../UserAvatar";
 import { STORAGE, API } from '../../configs';
 import { ROLE } from '../../utils/constant';
 import { setAdmin } from "../../redux/slice/AuthAdminSlice";
+import UserDefault from "../../assets/images/user-default.png";
 const { Header, Content, Sider } = Layout;
 
 const leftMenuListAdmin = [
@@ -169,7 +170,7 @@ const AppLayout = ({ children }) => {
 
   useEffect(() => {
     if (is_loading) {
-      API.getDetailsUser().then((response) => {
+      API.getDetailsAdmin().then((response) => {
         dispatch(setAdmin(response.data));
         if (response.data.role === ROLE.ADMIN) {
           setMenuList(leftMenuListAdmin);
@@ -249,7 +250,7 @@ const AppLayout = ({ children }) => {
           <Dropdown menu={menuProps} placement="bottomLeft">
             <a href="#" className="d-block" style={{ color: "#FFFFFF", overflow: "hidden", maxWidth: "75ch" }}>
               <label className="text-overflow text-black" >{user?.username ? user?.username : 'Admin'}</label>&ensp;
-              <AdminAvatar size={40} />
+              <UserAvatar size={40} image={user?.avatar ? `http://54.251.21.44/api/v1/file/${user?.avatar}` : UserDefault}/>
             </a>
           </Dropdown>
         </div>

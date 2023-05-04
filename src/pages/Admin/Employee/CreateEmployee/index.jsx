@@ -12,18 +12,14 @@ const CreateEmployee = () => {
   useDocumentTitle('Tạo nhân viên');
   const [file, setFile] = useState();
   const onFinish = (values) => {
-    // const formData = new FormData();
-    // const emptyBlob = new Blob([""], { type: "text/plain" });
-    // if (file && file?.name) {
-    //   formData.append("file", file, file.name);
-    // } else {
-    //   formData.append("file", emptyBlob, "");
-    // }
-    // API.uploadImageUser(formData).then(response => {
-    //   console.log("response", response);
-    // });
-    delete values.avatar;
-    API.register({...values, birthday: moment(values.birthday).format(DATE_FORMAT)}).then(() => {
+    if(file === null) {
+      notification["error"]({
+        message: "Vui lòng chọn ảnh",
+      });
+      return;
+    }
+    const dataRegister = {...values, birthday: moment(values.birthday).format(DATE_FORMAT)};
+    API.register({ user: JSON.stringify(dataRegister), image: file}).then(() => {
       notification["success"]({
         message: "Tạo nhân viên thành công",
       });

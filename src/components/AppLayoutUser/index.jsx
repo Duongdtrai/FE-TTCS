@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Layout, Menu, theme, Dropdown } from 'antd';
+import { Layout, theme, Dropdown } from 'antd';
 import logo from "../../assets/images/logo.png";
 import {
   ShoppingCartOutlined, UserOutlined, UnlockOutlined, PoweroffOutlined
@@ -8,27 +8,31 @@ import UserAvatar from "../UserAvatar";
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LogoutService } from './Service';
-import { STORAGE } from '../../configs';
 import { API } from "../../configs";
 import { setUser } from "../../redux/slice/AuthUserSlice";
+import UserDefault from "../../assets/images/user-default.png";
 const { Header, Content, Footer } = Layout;
 
 // eslint-disable-next-line react/prop-types
 const AppLayoutUser = ({ children }) => {
+  const is_loading = useSelector((state) => state.authUser.is_loading);
+  const authUser = useSelector((state) => state.authUser);
   const [refresh, setRefresh] = useState(true);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(is_loading);
   const history = useHistory();
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const authUser = useSelector((state) => state.authUser);
+  
   const dispatch = useDispatch();
 
   useEffect(() => {
-    API.getDetailsUser().then((response) => {
-      dispatch(setUser(response.data));
-      setIsLogin(true);
-    });
+    if (!is_loading) {
+      API.getDetailsUser().then((response) => {
+        dispatch(setUser(response.data));
+        setIsLogin(true);
+      });
+    }
   }, [authUser]);
 
   const items = [
@@ -48,7 +52,7 @@ const AppLayoutUser = ({ children }) => {
       icon: <PoweroffOutlined />,
     },
   ];
- 
+
   const handleMenuClick = (events) => {
     if (events.key) {
       if (events.key === "/logout") {
@@ -74,7 +78,7 @@ const AppLayoutUser = ({ children }) => {
         </div>
         <div className="flex justify-center items-center">
           <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/")}>Trang chủ</div>
-          <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/")}>Thể loại</div>
+          <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/category")}>Thể loại</div>
           <div className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/author")}>Tác giả</div>
           <div>
             <ShoppingCartOutlined className="cursor-pointer text-base mr-8 text-white" onClick={() => history.push("/cart")} />
@@ -98,8 +102,8 @@ const AppLayoutUser = ({ children }) => {
                     overflow: "hidden",
                     maxWidth: "75ch"
                   }}>
-                    <label className="text-overflow text-white" >{authUser?.user.username}</label>&ensp;
-                    <UserAvatar size={40} />
+                    <label className="text-overflow text-white mr-1" >{authUser?.user.username}</label>
+                    <UserAvatar size={40} image={authUser.user ? `http://54.251.21.44/api/v1/file/${authUser.user.avatar}` : UserDefault} />
                   </a>
                 </Dropdown>
               </div>

@@ -3,19 +3,37 @@ export const BearerToken = () => {
   return `Bearer ${localStorage.getItem("accessTokenAdmin")}`;
 };
 export const BearerTokenUser = () => {
-  return `Bearer ${localStorage.getItem("accessTokenAdmin")}`;
+  return `Bearer ${localStorage.getItem("accessTokenUser")}`;
 };
 const API = {
   loginAdmin: (data) => http.post("auth/login", data),
-  logout: () => http.post("auth/logout"),
+  logout: () => http.post("auth/logout", {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+  logoutUser: () => http.post("auth/logout", {
+    headers: {
+      Authorization: BearerTokenUser()
+    }
+  }),
   refreshToken: () => http.post("auth/refresh"),
-  register: (data) => http.post("auth/register", data),
+  register: (data) => http.post("auth/register", data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }),
   getAllUser: () => http.get("auth/all", {
     headers: {
       Authorization: BearerToken()
     }
   }),
   getDetailsUser: () => http.get("auth/detail", {
+    headers: {
+      Authorization: BearerTokenUser()
+    }
+  }),
+  getDetailsAdmin: () => http.get("auth/detail", {
     headers: {
       Authorization: BearerToken()
     }
@@ -43,11 +61,13 @@ const API = {
   }),
 
   /** API BOOKS */
-  getAllBook: () => http.get("book/all", {
-    headers: {
-      Authorization: BearerToken()
-    }
-  }),
+  getAllBook: () => http.get("book/all"
+    // , {
+    //   headers: {
+    //     Authorization: BearerToken()
+    //   }
+    // }
+  ),
   getDetailBook: (bookId) => http.get(`book/${bookId}`, {
     headers: {
       Authorization: BearerToken()
@@ -60,6 +80,11 @@ const API = {
   }),
   getImageBook: (avatarBook) => http.get(`file/${avatarBook}`),
   createNewBook: (bookId, data) => http.post(`book/add/${bookId}`, data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+  updateBook: (data, bookId, authorId) => http.post(`book/update/${bookId}/${authorId}`, data, {
     headers: {
       Authorization: BearerToken()
     }
@@ -111,14 +136,14 @@ const API = {
 
   getAllBorrowUser: () => http.get("borrowbook/get", {
     headers: {
-      Authorization: BearerToken()
+      Authorization: BearerTokenUser()
     }
   }),
 
 
   borrowBookUser: (data, bookId) => http.post(`borrowbook/add/${bookId}`, data, {
     headers: {
-      Authorization: BearerToken()
+      Authorization: BearerTokenUser()
     }
   }),
 
@@ -140,5 +165,25 @@ const API = {
       Authorization: BearerToken()
     }
   }),
+  /** COMMENT BOOK*/
+
+  commentBook: (bookId, data) => http.post(`comment/add/${bookId}`, data, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  }),
+
+  getAllCommentBook: (bookId) => http.get(`comment/${bookId}`, {
+    headers: {
+      Authorization: BearerTokenUser()
+    }
+  }),
+
+  deleteCommentBook: (commentId) => http.post(`comment/delete/${commentId}`, {
+    headers: {
+      Authorization: BearerToken()
+    }
+  })
+
 };
 export default API;
