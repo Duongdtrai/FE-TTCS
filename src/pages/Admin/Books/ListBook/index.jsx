@@ -56,6 +56,7 @@ const ListBook = () => {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
+      width: 400,
       render: (_, record) => <div>{record.description}</div>,
     },
     {
@@ -157,7 +158,7 @@ const ListBook = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách Book</h1>
+      <h1 className="text-3xl mb-4">Danh sách Book</h1>
       <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-book")}>Thêm book</Button>
       <Table columns={columns} dataSource={listBook} pagination={false} loading={loading} />
       <Pagination total={listBook.length} current={page} />

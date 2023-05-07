@@ -48,10 +48,22 @@ const HomePage = () => {
                         style={{ width: "100%", height: "300px", objectFit: "contain" }}
                         src={item.avatarBooks && item.avatarBooks.length > 0 ? `http://54.251.21.44/api/v1/file/${item.avatarBooks[0].avatar}` : BookDefault}
                       />
-                      <div><span style={{ fontWeight: 500 }}>Tên sách: </span>{item.title}</div>
-                      <div><span style={{ fontWeight: 500 }}>Tác giả: </span>{item.author.fullName}</div>
-                      <div><span style={{ fontWeight: 500 }}>Mô tả: </span>{item.description}</div>
-                      <Button type='primary' onClick={()=> handleBorrowBook(item.id)}>Mượn sách</Button>
+                      <div style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                      }}><span style={{ fontWeight: 500 }}>Tên sách: </span>{item.title}</div>
+                      <div style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                      }}><span style={{ fontWeight: 500 }}>Tác giả: </span>{item.author.fullName}</div>
+                      <div style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                      }}><span style={{ fontWeight: 500 }}>Mô tả: </span>{item.description}</div>
+                      <Button type='primary' onClick={() => handleBorrowBook(item.id)}>Mượn sách</Button>
                     </Col>
                   );
                 })

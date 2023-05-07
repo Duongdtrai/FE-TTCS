@@ -86,9 +86,10 @@ const ListStore = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Quản lý kho</h1>
-      <Table columns={columns} dataSource={data} pagination={false} />;
-      <Pagination total={data.length} current={page}/>
+      <h1 className="text-3xl mb-4">Quản lý kho</h1>
+      <div>Chức năng đang trong quá trình phát triển...</div>
+      {/* <Table columns={columns} dataSource={data} pagination={false} />;
+      <Pagination total={data.length} current={page}/> */}
     </div>
   );
 };

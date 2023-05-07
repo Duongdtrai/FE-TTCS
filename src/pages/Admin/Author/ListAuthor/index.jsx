@@ -119,7 +119,7 @@ const ListAuthor = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách tác giả</h1>
+      <h1 className="text-3xl mb-4">Danh sách tác giả</h1>
       <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-author")}>Thêm tác giả</Button>
       <Table columns={columns} dataSource={listAuthor} pagination={false} loading={loading} />
       <Pagination total={listAuthor.length} current={page} />

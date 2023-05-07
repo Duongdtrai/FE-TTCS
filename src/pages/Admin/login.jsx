@@ -48,7 +48,7 @@ const LoginAdmin = () => {
               />
             </div>
             <div className='col-span-4'>
-              <h1 className='text-center'>Đăng nhập</h1>
+              <h1 className='text-center mb-2'>Đăng nhập</h1>
               <Form
                 name="basic"
                 labelCol={{

@@ -96,7 +96,7 @@ const ListBorrow = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách mượn sách</h1>
+      <h1 className="text-3xl mb-4">Danh sách mượn sách</h1>
       <Table columns={columns} dataSource={listBorrowBook} pagination={false} />
       <Pagination total={listBorrowBook.length} current={page} handleTableChange={handleTableChange} />
     </div>

@@ -85,7 +85,7 @@ const ListUser = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách độc giả</h1>
+      <h1 className="text-3xl mb-4">Danh sách độc giả</h1>
       <Table columns={columns} dataSource={listUser} pagination={false} loading={loading} />
       <Pagination total={listUser.length} current={page} handleTableChange={handleTableChange} />
     </div>

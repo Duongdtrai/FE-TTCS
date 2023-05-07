@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Input, InputNumber, Select, DatePicker, Button, notification } from 'antd';
+import { Form, Input, Select, DatePicker, Button, notification } from 'antd';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import moment from 'moment';
 import UploadImage from '../../../../components/UploadImage';
@@ -15,12 +15,12 @@ const EditEmployee = () => {
   const { authorId } = useParams();
   const [authorInfor, setAuthorInfor] = useState({});
   const [loading, setLoading] = useState(false);
-  const [image,setImage] = useState(null);
+  const [image, setImage] = useState(null);
   const [form] = Form.useForm();
   useEffect(() => {
     API.getDetailAuthor(authorId).then((response) => {
-      if (response.data.avatar){
-        setImage(`http://54.251.21.44/api/v1/file/${response.data.avatar}`);
+      if (response.data.image) {
+        setImage(`http://54.251.21.44/api/v1/file/${response.data.image}`);
       }
       setAuthorInfor(response.data);
       form.setFieldsValue({
@@ -34,13 +34,16 @@ const EditEmployee = () => {
     });
   }, []);
   const handleSubmit = (values) => {
+    let birthday = new Date(moment(values.birthday).format(DATE_FORMAT));
+    let ageInMilliseconds = Date.now() - birthday.getTime();
+    let age = new Date(ageInMilliseconds).getFullYear() - 1970;
     const dataAuthor = {
       fullName: values.fullName,
       description: values.description,
       birthday: moment(values.birthday).format(DATE_FORMAT),
       address: values.address,
       gender: values.gender,
-      age: values.age,
+      age: age,
     };
     setLoading(true);
     API.updateAuthor(authorId, dataAuthor).then((response) => {
@@ -71,10 +74,11 @@ const EditEmployee = () => {
     }).catch(error => {
       notification["error"]({
         message: "Tạo nhân viên không thành công",
-      });}
+      });
+    }
     );
   };
-  
+
   return (
     <div>
       <h1 className='text-3xl'>Chỉnh sửa tác giả</h1>
@@ -86,23 +90,20 @@ const EditEmployee = () => {
         form={form}
       >
         <Form.Item name="bookImage" label="Ảnh">
-          <UploadImage uploadFile={uploadFile} image={image}/>
+          <UploadImage uploadFile={uploadFile} image={image} />
         </Form.Item>
         <Form.Item name="fullName" label="Họ và tên" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Họ và tên' />
         </Form.Item>
-        <Form.Item name="author" label="Giới tính" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+        <Form.Item name="gender" label="Giới tính" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Select className='w-full' placeholder='Giới tính'>
             <Option value='Male'>Nam</Option>
             <Option value='Female'>Nữ</Option>
             <Option value='Other'>Khác</Option>
           </Select>
         </Form.Item>
-        <Form.Item name="age" label="Tuổi" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <InputNumber className='w-full' placeholder='Tuổi' />
-        </Form.Item>
         <Form.Item name="birthday" label="Ngày sinh" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <DatePicker placeholder='Ngày sinh' format={DATE_FORMAT} style={{width: '100%'}}/>
+          <DatePicker placeholder='Ngày sinh' format={DATE_FORMAT} style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item name="address" label="Địa chỉ" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Địa chỉ' />
@@ -110,11 +111,9 @@ const EditEmployee = () => {
         <Form.Item name="description" label="Mô tả" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input.TextArea className='w-full' placeholder='Mô tả' />
         </Form.Item>
-        
-        
         <Form.Item>
           <Button type="primary" htmlType="submit" className="register-form-button" loading={loading}>
-            Tạo mới
+            Sửa
           </Button>
         </Form.Item>
       </Form>

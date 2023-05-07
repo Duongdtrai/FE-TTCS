@@ -18,7 +18,7 @@ const ListEmployee = () => {
   useEffect(() => {
     setLoading(true);
     API.getAllUser().then(response => {
-      setListEmployee(response.data);
+      setListEmployee(response.data.filter(item => item.role === 1));
       setLoading(false);
     }).catch(error => {
       notification["error"]({
@@ -35,7 +35,7 @@ const ListEmployee = () => {
         <Image
           width={70}
           height={70}
-          src={record.image ? `http://54.251.21.44/api/v1/file/${record.image}`: UserDefault}
+          src={record.avatar ? `http://54.251.21.44/api/v1/file/${record.avatar}`: UserDefault}
           style={{objectFit: 'contain'}}
         />
       </div> 
@@ -111,7 +111,7 @@ const ListEmployee = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách nhân viên</h1>
+      <h1 className="text-3xl mb-2">Danh sách nhân viên</h1>
       <Button type="primary" className='mb-2' onClick={() => history.push("/admin/create-employee")}>Thêm nhân viên</Button>
       <Table columns={columns} dataSource={listEmployee} pagination={false} loading={loading} />
       <Pagination total={listEmployee.length} current={page} />

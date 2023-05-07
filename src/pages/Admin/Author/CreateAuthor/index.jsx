@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, InputNumber, Select, DatePicker, Button } from 'antd';
+import { Form, Input, Select, DatePicker, Button, notification } from 'antd';
 import UploadImage from '../../../../components/UploadImage';
 import { useDocumentTitle } from "../../../../hooks/useDocumentTitle";
 import { DATE_FORMAT } from "../../../../utils/constant";
@@ -12,16 +12,19 @@ const CreateAuthor = () => {
   const history = useHistory();
 
   const handleSubmit = (values) => {
+    let birthday = new Date(moment(values.birthday).format(DATE_FORMAT));
+    let ageInMilliseconds = Date.now() - birthday.getTime();
+    let age = new Date(ageInMilliseconds).getFullYear() - 1970;
     const dataAuthor = {
       fullName: values.fullName,
       description: values.description,
       birthday: moment(values.birthday).format(DATE_FORMAT),
       address: values.address,
       gender: values.gender,
-      age: values.age,
+      age: age,
     };
     API.createNewAuthor(dataAuthor).then((response) => {
-      notification["error"]({
+      notification["success"]({
         message: "Thêm tác giả thành công",
       });
       history.push("/admin/list-author");
@@ -39,15 +42,12 @@ const CreateAuthor = () => {
         <Form.Item name="fullName" label="Họ và tên" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Input className='w-full' placeholder='Họ và tên' />
         </Form.Item>
-        <Form.Item name="author" label="Giới tính" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+        <Form.Item name="gender" label="Giới tính" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <Select className='w-full' placeholder='Giới tính'>
             <Option value='Male'>Nam</Option>
             <Option value='Female'>Nữ</Option>
             <Option value='Other'>Khác</Option>
           </Select>
-        </Form.Item>
-        <Form.Item name="age" label="Tuổi" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <InputNumber className='w-full' placeholder='Tuổi' />
         </Form.Item>
         <Form.Item name="birthday" label="Ngày sinh" rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
           <DatePicker placeholder='Ngày sinh' format={DATE_FORMAT} style={{width: "100%"}}/>

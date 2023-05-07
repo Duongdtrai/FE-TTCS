@@ -68,7 +68,7 @@ const EditBook = () => {
       formData.append("file", emptyBlob, "");
     }
     await API.addImageBook(bookId, formData).then((response) => {
-      notification["error"]({
+      notification["success"]({
         message: "Thêm ảnh thành công",
       });
     }).catch(err => {

@@ -95,6 +95,7 @@ const CreateEmployee = () => {
           name="birthday"
         >
           <DatePicker
+            className = 'w-full'
             placeholder='Ngày sinh'
             format={DATE_FORMAT}
           />

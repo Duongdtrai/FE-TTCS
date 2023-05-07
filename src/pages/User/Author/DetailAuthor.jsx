@@ -65,12 +65,12 @@ const DetailAuthor = () => {
         {listBook.map((book, index) => {
           return (
             // eslint-disable-next-line react/jsx-key
-            <div className='slider-item' key={index} >
+            <div className='slider-item mb-4' key={index} >
               <Image
                 width={150}
                 height={150}
                 preview={false}
-                src={book.avatar && book.avatar.length > 0 ? `http://54.251.21.44/api/v1/file/${book.avatar[0]}` : BookDefault}
+                src={book.avatarBooks && book.avatarBooks.length > 0 ? `http://54.251.21.44/api/v1/file/${book.avatarBooks[0].avatar}` : BookDefault}
                 style={{ objectFit: 'contain' }}
               />
               <div>
@@ -79,7 +79,6 @@ const DetailAuthor = () => {
                 <Button type='primary'>Mượn sách</Button>
               </div>
             </div>
-              
           );
         })}
       </Slider>

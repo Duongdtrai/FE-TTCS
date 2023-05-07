@@ -96,7 +96,7 @@ const ListReturn = () => {
   };
   return (
     <div>
-      <h1 className="text-3xl">Danh sách trả sách</h1>
+      <h1 className="text-3xl mb-4">Danh sách trả sách</h1>
       <Table columns={columns} dataSource={listReturnBook} pagination={false} />
       <Pagination total={listReturnBook.length} current={page} handleTableChange={handleTableChange} />
     </div>
